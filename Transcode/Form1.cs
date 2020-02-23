@@ -283,6 +283,8 @@ namespace Transcode
                 txbBitrate.Enabled = true;
             else
                 txbBitrate.Enabled = false;
+
+
         }
     }
 }

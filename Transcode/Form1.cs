@@ -138,11 +138,11 @@ namespace Transcode
                 }
                 if (checkBoxHXW.Checked)
                 {
-                    com += $" -r {cmbFramerate} ";
+                    com += $"";
                 }
                 if (checkBoxGPU.Checked)
                 {
-                    com += $" -r {cmbFramerate} ";
+                    com += $"";
                 }
                 return com;
             }
@@ -216,7 +216,7 @@ namespace Transcode
             vi.Nodes.Add($"编码器：{videos[i].Format}");
             vi.Nodes.Add($"大小：{videos[i].Size}");
             vi.Nodes.Add($"时长：{videos[i].Duration}");
-            vi.Nodes.Add($"比特率：{videos[i].Bitrate}");
+            vi.Nodes.Add($"比特率：{(videos[i].Bitrate)/1024} kbps");
             vi.Nodes.Add($"长度：{videos[i].Width}");
             vi.Nodes.Add($"宽度：{videos[i].Height}");
             vi.Nodes.Add($"长宽比：{videos[i].Aspectratio}");
@@ -233,7 +233,7 @@ namespace Transcode
             treeView1.ExpandAll();
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxGPU_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxGPU.Checked)
                 cmbGPU.Enabled = true;
@@ -241,7 +241,7 @@ namespace Transcode
                 cmbGPU.Enabled = false;
         }
 
-        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxHXW_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxHXW.Checked)
                 cmbHXW.Enabled = true;
@@ -249,7 +249,7 @@ namespace Transcode
                 cmbHXW.Enabled = false;
         }
 
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxFast_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxFast.Checked)
             {
@@ -269,22 +269,14 @@ namespace Transcode
             }
         }
 
-        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxFramerate_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxFramerate.Checked)
-                cmbFramerate.Enabled = true;
-            else
-                cmbFramerate.Enabled = false;
+            cmbFramerate.Enabled = checkBoxFramerate.Checked;
         }
 
-        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxBitrate_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxBitrate.Checked)
-                txbBitrate.Enabled = true;
-            else
-                txbBitrate.Enabled = false;
-
-
+            txbBitrate.Enabled = checkBoxBitrate.Checked;
         }
     }
 }

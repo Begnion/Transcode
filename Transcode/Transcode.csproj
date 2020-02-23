@@ -94,4 +94,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\MediaInfo.Native.19.9.0\build\MediaInfo.Native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MediaInfo.Native.19.9.0\build\MediaInfo.Native.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>cd ..\..\
+
+copy "Necessary\ffmpeg.exe" "$(OutDir)ffmpeg.exe"</PreBuildEvent>
+  </PropertyGroup>
 </Project>

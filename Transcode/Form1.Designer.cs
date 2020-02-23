@@ -213,7 +213,7 @@
             this.checkBoxBitrate.TabIndex = 13;
             this.checkBoxBitrate.Text = "视频码率：";
             this.checkBoxBitrate.UseVisualStyleBackColor = true;
-            this.checkBoxBitrate.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
+            this.checkBoxBitrate.CheckedChanged += new System.EventHandler(this.checkBoxBitrate_CheckedChanged);
             // 
             // checkBoxFramerate
             // 
@@ -224,7 +224,7 @@
             this.checkBoxFramerate.TabIndex = 12;
             this.checkBoxFramerate.Text = "帧率：";
             this.checkBoxFramerate.UseVisualStyleBackColor = true;
-            this.checkBoxFramerate.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
+            this.checkBoxFramerate.CheckedChanged += new System.EventHandler(this.checkBoxFramerate_CheckedChanged);
             // 
             // cmbHXW
             // 
@@ -258,7 +258,7 @@
             this.checkBoxHXW.TabIndex = 10;
             this.checkBoxHXW.Text = "更改分辨率";
             this.checkBoxHXW.UseVisualStyleBackColor = true;
-            this.checkBoxHXW.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
+            this.checkBoxHXW.CheckedChanged += new System.EventHandler(this.checkBoxHXW_CheckedChanged);
             // 
             // checkBoxFast
             // 
@@ -269,7 +269,7 @@
             this.checkBoxFast.TabIndex = 9;
             this.checkBoxFast.Text = "极速模式(复制视频流)";
             this.checkBoxFast.UseVisualStyleBackColor = true;
-            this.checkBoxFast.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            this.checkBoxFast.CheckedChanged += new System.EventHandler(this.checkBoxFast_CheckedChanged);
             // 
             // cmbGPU
             // 
@@ -293,7 +293,7 @@
             this.checkBoxGPU.TabIndex = 6;
             this.checkBoxGPU.Text = "GPU加速";
             this.checkBoxGPU.UseVisualStyleBackColor = true;
-            this.checkBoxGPU.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.checkBoxGPU.CheckedChanged += new System.EventHandler(this.checkBoxGPU_CheckedChanged);
             // 
             // cmbFramerate
             // 
@@ -338,9 +338,9 @@
             // txbBitrate
             // 
             this.txbBitrate.Enabled = false;
-            this.txbBitrate.Location = new System.Drawing.Point(200, 13);
+            this.txbBitrate.Location = new System.Drawing.Point(216, 13);
             this.txbBitrate.Name = "txbBitrate";
-            this.txbBitrate.Size = new System.Drawing.Size(91, 25);
+            this.txbBitrate.Size = new System.Drawing.Size(75, 25);
             this.txbBitrate.TabIndex = 1;
             // 
             // tabAudio

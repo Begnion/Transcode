@@ -1,0 +1,443 @@
+﻿namespace Transcode
+{
+    partial class Form1
+    {
+        /// <summary>
+        /// 必需的设计器变量。
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// 清理所有正在使用的资源。
+        /// </summary>
+        /// <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows 窗体设计器生成的代码
+
+        /// <summary>
+        /// 设计器支持所需的方法 - 不要修改
+        /// 使用代码编辑器修改此方法的内容。
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.btnRemove = new System.Windows.Forms.Button();
+            this.btnPlay = new System.Windows.Forms.Button();
+            this.btnStart = new System.Windows.Forms.Button();
+            this.btnPause = new System.Windows.Forms.Button();
+            this.labPath = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btnSelect = new System.Windows.Forms.Button();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.btnInfo = new System.Windows.Forms.Button();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabVideo = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
+            this.checkBoxBitrate = new System.Windows.Forms.CheckBox();
+            this.checkBoxFramerate = new System.Windows.Forms.CheckBox();
+            this.cmbHXW = new System.Windows.Forms.ComboBox();
+            this.checkBoxHXW = new System.Windows.Forms.CheckBox();
+            this.checkBoxFast = new System.Windows.Forms.CheckBox();
+            this.cmbGPU = new System.Windows.Forms.ComboBox();
+            this.checkBoxGPU = new System.Windows.Forms.CheckBox();
+            this.cmbFramerate = new System.Windows.Forms.ComboBox();
+            this.cmbFomart = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txbBitrate = new System.Windows.Forms.TextBox();
+            this.tabAudio = new System.Windows.Forms.TabPage();
+            this.tabTime = new System.Windows.Forms.TabPage();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tabControl1.SuspendLayout();
+            this.tabVideo.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Location = new System.Drawing.Point(13, 13);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(60, 60);
+            this.btnAdd.TabIndex = 0;
+            this.btnAdd.Text = "添加";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
+            // btnRemove
+            // 
+            this.btnRemove.Location = new System.Drawing.Point(79, 13);
+            this.btnRemove.Name = "btnRemove";
+            this.btnRemove.Size = new System.Drawing.Size(60, 60);
+            this.btnRemove.TabIndex = 1;
+            this.btnRemove.Text = "移除";
+            this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            // 
+            // btnPlay
+            // 
+            this.btnPlay.Location = new System.Drawing.Point(145, 13);
+            this.btnPlay.Name = "btnPlay";
+            this.btnPlay.Size = new System.Drawing.Size(60, 60);
+            this.btnPlay.TabIndex = 2;
+            this.btnPlay.Text = "播放";
+            this.btnPlay.UseVisualStyleBackColor = true;
+            // 
+            // btnStart
+            // 
+            this.btnStart.Location = new System.Drawing.Point(211, 13);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(60, 60);
+            this.btnStart.TabIndex = 3;
+            this.btnStart.Text = "开始";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // btnPause
+            // 
+            this.btnPause.Location = new System.Drawing.Point(277, 13);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(60, 60);
+            this.btnPause.TabIndex = 4;
+            this.btnPause.Text = "暂停";
+            this.btnPause.UseVisualStyleBackColor = true;
+            // 
+            // labPath
+            // 
+            this.labPath.AutoSize = true;
+            this.labPath.Location = new System.Drawing.Point(406, 13);
+            this.labPath.Name = "labPath";
+            this.labPath.Size = new System.Drawing.Size(82, 15);
+            this.labPath.TabIndex = 5;
+            this.labPath.Text = "输出路径：";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(409, 32);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(348, 25);
+            this.textBox1.TabIndex = 6;
+            // 
+            // btnSelect
+            // 
+            this.btnSelect.Location = new System.Drawing.Point(764, 32);
+            this.btnSelect.Name = "btnSelect";
+            this.btnSelect.Size = new System.Drawing.Size(70, 25);
+            this.btnSelect.TabIndex = 7;
+            this.btnSelect.Text = "选择";
+            this.btnSelect.UseVisualStyleBackColor = true;
+            this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
+            // 
+            // listView1
+            // 
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(13, 94);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(536, 346);
+            this.listView1.TabIndex = 8;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.List;
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            // 
+            // btnInfo
+            // 
+            this.btnInfo.Location = new System.Drawing.Point(555, 94);
+            this.btnInfo.Name = "btnInfo";
+            this.btnInfo.Size = new System.Drawing.Size(269, 23);
+            this.btnInfo.TabIndex = 9;
+            this.btnInfo.Text = "文件信息";
+            this.btnInfo.UseVisualStyleBackColor = true;
+            // 
+            // treeView1
+            // 
+            this.treeView1.Location = new System.Drawing.Point(555, 124);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(269, 316);
+            this.treeView1.TabIndex = 10;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabVideo);
+            this.tabControl1.Controls.Add(this.tabAudio);
+            this.tabControl1.Controls.Add(this.tabTime);
+            this.tabControl1.Location = new System.Drawing.Point(13, 511);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(811, 199);
+            this.tabControl1.TabIndex = 11;
+            // 
+            // tabVideo
+            // 
+            this.tabVideo.Controls.Add(this.label1);
+            this.tabVideo.Controls.Add(this.checkBoxBitrate);
+            this.tabVideo.Controls.Add(this.checkBoxFramerate);
+            this.tabVideo.Controls.Add(this.cmbHXW);
+            this.tabVideo.Controls.Add(this.checkBoxHXW);
+            this.tabVideo.Controls.Add(this.checkBoxFast);
+            this.tabVideo.Controls.Add(this.cmbGPU);
+            this.tabVideo.Controls.Add(this.checkBoxGPU);
+            this.tabVideo.Controls.Add(this.cmbFramerate);
+            this.tabVideo.Controls.Add(this.cmbFomart);
+            this.tabVideo.Controls.Add(this.label2);
+            this.tabVideo.Controls.Add(this.txbBitrate);
+            this.tabVideo.Location = new System.Drawing.Point(4, 25);
+            this.tabVideo.Name = "tabVideo";
+            this.tabVideo.Padding = new System.Windows.Forms.Padding(3);
+            this.tabVideo.Size = new System.Drawing.Size(803, 170);
+            this.tabVideo.TabIndex = 0;
+            this.tabVideo.Text = "视频";
+            this.tabVideo.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(297, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(39, 15);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "kbps";
+            // 
+            // checkBoxBitrate
+            // 
+            this.checkBoxBitrate.AutoSize = true;
+            this.checkBoxBitrate.Location = new System.Drawing.Point(90, 15);
+            this.checkBoxBitrate.Name = "checkBoxBitrate";
+            this.checkBoxBitrate.Size = new System.Drawing.Size(104, 19);
+            this.checkBoxBitrate.TabIndex = 13;
+            this.checkBoxBitrate.Text = "视频码率：";
+            this.checkBoxBitrate.UseVisualStyleBackColor = true;
+            this.checkBoxBitrate.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
+            // 
+            // checkBoxFramerate
+            // 
+            this.checkBoxFramerate.AutoSize = true;
+            this.checkBoxFramerate.Location = new System.Drawing.Point(90, 123);
+            this.checkBoxFramerate.Name = "checkBoxFramerate";
+            this.checkBoxFramerate.Size = new System.Drawing.Size(74, 19);
+            this.checkBoxFramerate.TabIndex = 12;
+            this.checkBoxFramerate.Text = "帧率：";
+            this.checkBoxFramerate.UseVisualStyleBackColor = true;
+            this.checkBoxFramerate.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
+            // 
+            // cmbHXW
+            // 
+            this.cmbHXW.Enabled = false;
+            this.cmbHXW.FormattingEnabled = true;
+            this.cmbHXW.Items.AddRange(new object[] {
+            "2560x1440",
+            "1920x1080",
+            "1600x900",
+            "1440x900",
+            "1366x768",
+            "1280x900",
+            "1280x720",
+            "1080x576",
+            "720x576",
+            "720x480",
+            "640x480",
+            "640x360",
+            ""});
+            this.cmbHXW.Location = new System.Drawing.Point(538, 14);
+            this.cmbHXW.Name = "cmbHXW";
+            this.cmbHXW.Size = new System.Drawing.Size(131, 23);
+            this.cmbHXW.TabIndex = 11;
+            // 
+            // checkBoxHXW
+            // 
+            this.checkBoxHXW.AutoSize = true;
+            this.checkBoxHXW.Location = new System.Drawing.Point(428, 16);
+            this.checkBoxHXW.Name = "checkBoxHXW";
+            this.checkBoxHXW.Size = new System.Drawing.Size(104, 19);
+            this.checkBoxHXW.TabIndex = 10;
+            this.checkBoxHXW.Text = "更改分辨率";
+            this.checkBoxHXW.UseVisualStyleBackColor = true;
+            this.checkBoxHXW.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
+            // 
+            // checkBoxFast
+            // 
+            this.checkBoxFast.AutoSize = true;
+            this.checkBoxFast.Location = new System.Drawing.Point(428, 120);
+            this.checkBoxFast.Name = "checkBoxFast";
+            this.checkBoxFast.Size = new System.Drawing.Size(180, 19);
+            this.checkBoxFast.TabIndex = 9;
+            this.checkBoxFast.Text = "极速模式(复制视频流)";
+            this.checkBoxFast.UseVisualStyleBackColor = true;
+            this.checkBoxFast.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            // 
+            // cmbGPU
+            // 
+            this.cmbGPU.Enabled = false;
+            this.cmbGPU.FormattingEnabled = true;
+            this.cmbGPU.Items.AddRange(new object[] {
+            "Intel",
+            "AMD",
+            "Nvidia"});
+            this.cmbGPU.Location = new System.Drawing.Point(517, 65);
+            this.cmbGPU.Name = "cmbGPU";
+            this.cmbGPU.Size = new System.Drawing.Size(152, 23);
+            this.cmbGPU.TabIndex = 8;
+            // 
+            // checkBoxGPU
+            // 
+            this.checkBoxGPU.AutoSize = true;
+            this.checkBoxGPU.Location = new System.Drawing.Point(428, 68);
+            this.checkBoxGPU.Name = "checkBoxGPU";
+            this.checkBoxGPU.Size = new System.Drawing.Size(83, 19);
+            this.checkBoxGPU.TabIndex = 6;
+            this.checkBoxGPU.Text = "GPU加速";
+            this.checkBoxGPU.UseVisualStyleBackColor = true;
+            this.checkBoxGPU.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // cmbFramerate
+            // 
+            this.cmbFramerate.Enabled = false;
+            this.cmbFramerate.FormattingEnabled = true;
+            this.cmbFramerate.Items.AddRange(new object[] {
+            "25",
+            "30",
+            "50",
+            "60",
+            "90",
+            "120",
+            "144"});
+            this.cmbFramerate.Location = new System.Drawing.Point(194, 121);
+            this.cmbFramerate.Name = "cmbFramerate";
+            this.cmbFramerate.Size = new System.Drawing.Size(128, 23);
+            this.cmbFramerate.TabIndex = 5;
+            // 
+            // cmbFomart
+            // 
+            this.cmbFomart.FormattingEnabled = true;
+            this.cmbFomart.Items.AddRange(new object[] {
+            "mp4",
+            "ts",
+            "mkv",
+            "flv",
+            "wmv"});
+            this.cmbFomart.Location = new System.Drawing.Point(194, 65);
+            this.cmbFomart.Name = "cmbFomart";
+            this.cmbFomart.Size = new System.Drawing.Size(128, 23);
+            this.cmbFomart.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(87, 68);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(52, 15);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "格式：";
+            // 
+            // txbBitrate
+            // 
+            this.txbBitrate.Enabled = false;
+            this.txbBitrate.Location = new System.Drawing.Point(200, 13);
+            this.txbBitrate.Name = "txbBitrate";
+            this.txbBitrate.Size = new System.Drawing.Size(91, 25);
+            this.txbBitrate.TabIndex = 1;
+            // 
+            // tabAudio
+            // 
+            this.tabAudio.Location = new System.Drawing.Point(4, 25);
+            this.tabAudio.Name = "tabAudio";
+            this.tabAudio.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAudio.Size = new System.Drawing.Size(803, 170);
+            this.tabAudio.TabIndex = 1;
+            this.tabAudio.Text = "音频";
+            this.tabAudio.UseVisualStyleBackColor = true;
+            // 
+            // tabTime
+            // 
+            this.tabTime.Location = new System.Drawing.Point(4, 25);
+            this.tabTime.Name = "tabTime";
+            this.tabTime.Size = new System.Drawing.Size(803, 170);
+            this.tabTime.TabIndex = 2;
+            this.tabTime.Text = "剪切";
+            this.tabTime.UseVisualStyleBackColor = true;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(113, 463);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(707, 23);
+            this.progressBar1.TabIndex = 12;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(10, 463);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(97, 15);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "当前任务进度";
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(836, 725);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.treeView1);
+            this.Controls.Add(this.btnInfo);
+            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.btnSelect);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.labPath);
+            this.Controls.Add(this.btnPause);
+            this.Controls.Add(this.btnStart);
+            this.Controls.Add(this.btnPlay);
+            this.Controls.Add(this.btnRemove);
+            this.Controls.Add(this.btnAdd);
+            this.Name = "Form1";
+            this.Text = "视频转换";
+            this.tabControl1.ResumeLayout(false);
+            this.tabVideo.ResumeLayout(false);
+            this.tabVideo.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.Button btnRemove;
+        private System.Windows.Forms.Button btnPlay;
+        private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.Label labPath;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button btnSelect;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.Button btnInfo;
+        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabVideo;
+        private System.Windows.Forms.TabPage tabAudio;
+        private System.Windows.Forms.TabPage tabTime;
+        private System.Windows.Forms.CheckBox checkBoxFast;
+        private System.Windows.Forms.ComboBox cmbGPU;
+        private System.Windows.Forms.CheckBox checkBoxGPU;
+        private System.Windows.Forms.ComboBox cmbFramerate;
+        private System.Windows.Forms.ComboBox cmbFomart;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txbBitrate;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox checkBoxHXW;
+        private System.Windows.Forms.ComboBox cmbHXW;
+        private System.Windows.Forms.CheckBox checkBoxFramerate;
+        private System.Windows.Forms.CheckBox checkBoxBitrate;
+        private System.Windows.Forms.Label label1;
+    }
+}
+

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Transcode
 {
-    class Video
+    internal class Video
     {
         public string Path { get; set; }
         public string Format { get; set; }

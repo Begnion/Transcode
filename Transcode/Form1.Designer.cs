@@ -89,6 +89,7 @@
             this.btnPlay.TabIndex = 2;
             this.btnPlay.Text = "播放";
             this.btnPlay.UseVisualStyleBackColor = true;
+            this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
             // btnStart
             // 
@@ -275,10 +276,6 @@
             // 
             this.cmbGPU.Enabled = false;
             this.cmbGPU.FormattingEnabled = true;
-            this.cmbGPU.Items.AddRange(new object[] {
-            "Intel",
-            "AMD",
-            "Nvidia"});
             this.cmbGPU.Location = new System.Drawing.Point(517, 65);
             this.cmbGPU.Name = "cmbGPU";
             this.cmbGPU.Size = new System.Drawing.Size(152, 23);

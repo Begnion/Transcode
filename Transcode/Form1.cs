@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Management;
 
 namespace Transcode
 {
@@ -121,31 +122,37 @@ namespace Transcode
 
         string Assembly()
         {
-            string com = "";
             if(checkBoxFast.Checked)
             {
                 return "-c copy";
             }
-            else
+
+            //视频部分
+            StringBuilder sbCom = new StringBuilder("");
+            if (checkBoxBitrate.Checked)
             {
-                if (checkBoxBitrate.Checked)
-                {
-                    com += $" -b:v {txbBitrate}k ";
-                }
-                if (checkBoxFramerate.Checked)
-                {
-                    com += $" -r {cmbFramerate} ";
-                }
-                if (checkBoxHXW.Checked)
-                {
-                    com += $"";
-                }
-                if (checkBoxGPU.Checked)
-                {
-                    com += $"";
-                }
-                return com;
+                sbCom.Append($" -b:v {txbBitrate.Text}k ");
             }
+            if (checkBoxFramerate.Checked)
+            {
+                sbCom.Append($" -r {cmbFramerate.Text} ");
+            }
+            if (checkBoxHXW.Checked)
+            {
+                sbCom.Append($"");
+            }
+            if (checkBoxGPU.Checked)
+            {
+                if(cmbGPU.SelectedText=="Intel")
+                    sbCom.Append($"");
+                if (cmbGPU.SelectedText == "AMD")
+                    sbCom.Append($"");
+                if (cmbGPU.SelectedText == "Nvidia")
+                    sbCom.Append($"");
+            }
+            //音频部分
+
+            return sbCom.ToString();
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
@@ -235,18 +242,25 @@ namespace Transcode
 
         private void checkBoxGPU_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxGPU.Checked)
-                cmbGPU.Enabled = true;
-            else
-                cmbGPU.Enabled = false;
+            StringBuilder sb = new StringBuilder("");
+            ManagementObjectSearcher objvide = new ManagementObjectSearcher("select * from Win32_VideoController");
+            foreach (ManagementObject obj in objvide.Get())
+            {
+                sb.Append(obj["Name"]);
+            }
+            string gpu=sb.ToString();
+            if (gpu.Contains("Intel"))
+                cmbGPU.Items.Add("Intel");
+            if (gpu.Contains("AMD"))
+                cmbGPU.Items.Add("AMD");
+            if (gpu.Contains("Nvidia"))
+                cmbGPU.Items.Add("Nvidia");
+            cmbGPU.Enabled = checkBoxGPU.Checked;
         }
 
         private void checkBoxHXW_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxHXW.Checked)
-                cmbHXW.Enabled = true;
-            else
-                cmbHXW.Enabled = false;
+            cmbHXW.Enabled = checkBoxHXW.Checked;
         }
 
         private void checkBoxFast_CheckedChanged(object sender, EventArgs e)
@@ -258,6 +272,10 @@ namespace Transcode
                 cmbFramerate.Enabled = false;
                 cmbGPU.Enabled = false;
                 txbBitrate.Enabled = false;
+                checkBoxHXW.Enabled = false;
+                checkBoxBitrate.Enabled = false;
+                checkBoxGPU.Enabled = false;
+                checkBoxFramerate.Enabled = false;
             }
             else
             {
@@ -266,6 +284,10 @@ namespace Transcode
                 cmbFramerate.Enabled = true;
                 cmbGPU.Enabled = true;
                 txbBitrate.Enabled = true;
+                checkBoxHXW.Enabled = true;
+                checkBoxBitrate.Enabled = true;
+                checkBoxGPU.Enabled = true;
+                checkBoxFramerate.Enabled = true;
             }
         }
 
@@ -277,6 +299,11 @@ namespace Transcode
         private void checkBoxBitrate_CheckedChanged(object sender, EventArgs e)
         {
             txbBitrate.Enabled = checkBoxBitrate.Checked;
+        }
+
+        private void btnPlay_Click(object sender, EventArgs e)
+        {
+            Form frmPlayer=new Form2();
         }
     }
 }

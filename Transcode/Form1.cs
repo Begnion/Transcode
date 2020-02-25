@@ -177,7 +177,7 @@ namespace Transcode
             //音频部分
             if (chbAuFomart.Checked)
             {
-                sbCom.Append($" -f {cbxAuFormat.Text}");
+                sbCom.Append($" -c:a {cbxAuFormat.Text}");
 
                 if (chbAuBit.Checked)
                 {
@@ -355,6 +355,44 @@ namespace Transcode
         {
             Form frmPlayer=new Form2(listView1.FocusedItem.Text);
             frmPlayer.Show();
+        }
+
+        private void chbAuFomart_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chbAuFomart.Checked)
+            {
+                chbAuChannel.Enabled = true;
+                chbAuBit.Enabled = true;
+                chbSampleBits.Enabled = true;
+                chbSampleRate.Enabled = true;
+            }
+            else
+            {
+                chbAuChannel.Enabled = false;
+                chbAuBit.Enabled = false;
+                chbSampleBits.Enabled = false;
+                chbSampleRate.Enabled = false;
+            }
+        }
+
+        private void chbAuBit_CheckedChanged(object sender, EventArgs e)
+        {
+            txbAuBit.Enabled = chbAuBit.Checked;
+        }
+
+        private void chbAuChannel_CheckedChanged(object sender, EventArgs e)
+        {
+            cbxAuChannel.Enabled = chbAuChannel.Checked;
+        }
+
+        private void chbSampleRate_CheckedChanged(object sender, EventArgs e)
+        {
+            cbxSampleRate.Enabled = chbSampleRate.Checked;
+        }
+
+        private void chbSampleBits_CheckedChanged(object sender, EventArgs e)
+        {
+            cbxSampleBits.Enabled = chbSampleBits.Checked;
         }
     }
 }

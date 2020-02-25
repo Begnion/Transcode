@@ -68,6 +68,8 @@
             this.chbSampleBits = new System.Windows.Forms.CheckBox();
             this.cbxSampleBits = new System.Windows.Forms.ComboBox();
             this.chbAuFomart = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabVideo.SuspendLayout();
             this.tabAudio.SuspendLayout();
@@ -355,6 +357,8 @@
             // 
             // tabAudio
             // 
+            this.tabAudio.Controls.Add(this.label6);
+            this.tabAudio.Controls.Add(this.label5);
             this.tabAudio.Controls.Add(this.chbAuFomart);
             this.tabAudio.Controls.Add(this.cbxSampleBits);
             this.tabAudio.Controls.Add(this.chbSampleBits);
@@ -402,15 +406,18 @@
             // chbAuBit
             // 
             this.chbAuBit.AutoSize = true;
+            this.chbAuBit.Enabled = false;
             this.chbAuBit.Location = new System.Drawing.Point(113, 32);
             this.chbAuBit.Name = "chbAuBit";
             this.chbAuBit.Size = new System.Drawing.Size(89, 19);
             this.chbAuBit.TabIndex = 0;
             this.chbAuBit.Text = "音频码率";
             this.chbAuBit.UseVisualStyleBackColor = true;
+            this.chbAuBit.CheckedChanged += new System.EventHandler(this.chbAuBit_CheckedChanged);
             // 
             // txbAuBit
             // 
+            this.txbAuBit.Enabled = false;
             this.txbAuBit.Location = new System.Drawing.Point(227, 30);
             this.txbAuBit.Name = "txbAuBit";
             this.txbAuBit.Size = new System.Drawing.Size(100, 25);
@@ -427,7 +434,15 @@
             // 
             // cbxAuFormat
             // 
+            this.cbxAuFormat.Enabled = false;
             this.cbxAuFormat.FormattingEnabled = true;
+            this.cbxAuFormat.Items.AddRange(new object[] {
+            "libmp3lame",
+            "aac",
+            "mp2",
+            "ac3",
+            "alac",
+            "pcm_s16le"});
             this.cbxAuFormat.Location = new System.Drawing.Point(206, 74);
             this.cbxAuFormat.Name = "cbxAuFormat";
             this.cbxAuFormat.Size = new System.Drawing.Size(121, 23);
@@ -436,16 +451,24 @@
             // chbAuChannel
             // 
             this.chbAuChannel.AutoSize = true;
+            this.chbAuChannel.Enabled = false;
             this.chbAuChannel.Location = new System.Drawing.Point(113, 120);
             this.chbAuChannel.Name = "chbAuChannel";
             this.chbAuChannel.Size = new System.Drawing.Size(59, 19);
             this.chbAuChannel.TabIndex = 5;
             this.chbAuChannel.Text = "声道";
             this.chbAuChannel.UseVisualStyleBackColor = true;
+            this.chbAuChannel.CheckedChanged += new System.EventHandler(this.chbAuChannel_CheckedChanged);
             // 
             // cbxAuChannel
             // 
+            this.cbxAuChannel.Enabled = false;
             this.cbxAuChannel.FormattingEnabled = true;
+            this.cbxAuChannel.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "5",
+            "6"});
             this.cbxAuChannel.Location = new System.Drawing.Point(206, 118);
             this.cbxAuChannel.Name = "cbxAuChannel";
             this.cbxAuChannel.Size = new System.Drawing.Size(121, 23);
@@ -454,16 +477,28 @@
             // chbSampleRate
             // 
             this.chbSampleRate.AutoSize = true;
+            this.chbSampleRate.Enabled = false;
             this.chbSampleRate.Location = new System.Drawing.Point(439, 32);
             this.chbSampleRate.Name = "chbSampleRate";
             this.chbSampleRate.Size = new System.Drawing.Size(74, 19);
             this.chbSampleRate.TabIndex = 7;
             this.chbSampleRate.Text = "重采样";
             this.chbSampleRate.UseVisualStyleBackColor = true;
+            this.chbSampleRate.CheckedChanged += new System.EventHandler(this.chbSampleRate_CheckedChanged);
             // 
             // cbxSampleRate
             // 
+            this.cbxSampleRate.Enabled = false;
             this.cbxSampleRate.FormattingEnabled = true;
+            this.cbxSampleRate.Items.AddRange(new object[] {
+            "8000",
+            "11025",
+            "16000",
+            "22050",
+            "24000",
+            "32000",
+            "44100",
+            "48000"});
             this.cbxSampleRate.Location = new System.Drawing.Point(538, 30);
             this.cbxSampleRate.Name = "cbxSampleRate";
             this.cbxSampleRate.Size = new System.Drawing.Size(121, 23);
@@ -472,16 +507,28 @@
             // chbSampleBits
             // 
             this.chbSampleBits.AutoSize = true;
+            this.chbSampleBits.Enabled = false;
             this.chbSampleBits.Location = new System.Drawing.Point(439, 77);
             this.chbSampleBits.Name = "chbSampleBits";
             this.chbSampleBits.Size = new System.Drawing.Size(89, 19);
             this.chbSampleBits.TabIndex = 9;
             this.chbSampleBits.Text = "样本位数";
             this.chbSampleBits.UseVisualStyleBackColor = true;
+            this.chbSampleBits.CheckedChanged += new System.EventHandler(this.chbSampleBits_CheckedChanged);
             // 
             // cbxSampleBits
             // 
+            this.cbxSampleBits.Enabled = false;
             this.cbxSampleBits.FormattingEnabled = true;
+            this.cbxSampleBits.Items.AddRange(new object[] {
+            "u8",
+            "s16",
+            "s32",
+            "u8p",
+            "s16p",
+            "s32p",
+            "s64",
+            "s64p"});
             this.cbxSampleBits.Location = new System.Drawing.Point(538, 77);
             this.cbxSampleBits.Name = "cbxSampleBits";
             this.cbxSampleBits.Size = new System.Drawing.Size(121, 23);
@@ -496,6 +543,25 @@
             this.chbAuFomart.TabIndex = 11;
             this.chbAuFomart.Text = "格式";
             this.chbAuFomart.UseVisualStyleBackColor = true;
+            this.chbAuFomart.CheckedChanged += new System.EventHandler(this.chbAuFomart_CheckedChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(665, 36);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(23, 15);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "Hz";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(665, 82);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(31, 15);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "bit";
             // 
             // Form1
             // 
@@ -570,6 +636,8 @@
         private System.Windows.Forms.ComboBox cbxSampleRate;
         private System.Windows.Forms.CheckBox chbSampleRate;
         private System.Windows.Forms.CheckBox chbAuFomart;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
     }
 }
 

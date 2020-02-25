@@ -14,42 +14,57 @@ namespace Transcode
         private Player vPlayer;
         private bool isPlaying;
 
-        public Form2()
+        public Form2(string t)
         {
             InitializeComponent();
 
-            string pluginPath = System.Environment.CurrentDirectory + "\\vlc\\plugins\\";
+            string pluginPath = $"{Environment.CurrentDirectory}\\plugins\\";
             vPlayer = new Player(pluginPath);
-            IntPtr renderWnd = this.panel1.Handle;
+            IntPtr renderWnd = panel1.Handle;
             vPlayer.SetRenderWindow((int)renderWnd);
-
             tbVideoTime.Text = "00:00:00/00:00:00";
-
             isPlaying = false;
+
+            vPlayer.PlayFile(t);
+            trackBar1.SetRange(0, (int)vPlayer.Duration());
+            trackBar1.Value = 0;
+            timer1.Start();
+            isPlaying = true;
+            btnStart.Text = "暂停";
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() == DialogResult.OK)
+            if (isPlaying)
             {
-                vPlayer.PlayFile(ofd.FileName);
-                trackBar1.SetRange(0, (int)vPlayer.Duration());
-                trackBar1.Value = 0;
+                vPlayer.Pause();
+                timer1.Stop();
+                isPlaying = false;
+                btnStart.Text = "播放";
+            }
+            else
+            {
+                vPlayer.Play();
                 timer1.Start();
                 isPlaying = true;
+                btnStart.Text = "暂停";
             }
         }
 
         private void btnReset_Click(object sender, EventArgs e)
         {
+            btnStart.Text = "播放";
+            vPlayer.Stop();
+            trackBar1.Value = 0;
+            tbVideoTime.Text = "00:00:00/00:00:00";
+            timer1.Stop();
+            isPlaying = false;
+        }
+
+        private void btnFullScr_Click(object sender, EventArgs e)
+        {
             if (isPlaying)
-            {
-                vPlayer.Stop();
-                trackBar1.Value = 0;
-                timer1.Stop();
-                isPlaying = false;
-            }
+                vPlayer.SetFullScreen(true);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -64,9 +79,7 @@ namespace Transcode
                 else
                 {
                     trackBar1.Value = trackBar1.Value + 1;
-                    tbVideoTime.Text = string.Format("{0}/{1}", 
-                        GetTimeString(trackBar1.Value), 
-                        GetTimeString(trackBar1.Maximum));
+                    tbVideoTime.Text = string.Format("{0}/{1}", GetTimeString(trackBar1.Value), GetTimeString(trackBar1.Maximum));
                 }
             }
         }
@@ -86,6 +99,15 @@ namespace Transcode
             {
                 vPlayer.SetPlayTime(trackBar1.Value);
                 trackBar1.Value = (int)vPlayer.GetPlayTime();
+            }
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            if (isPlaying)
+            {
+                vPlayer.SetVolume(trackBar2.Value);
+                trackBar2.Value = (int)vPlayer.GetVolume();
             }
         }
     }

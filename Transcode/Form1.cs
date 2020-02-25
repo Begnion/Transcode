@@ -117,7 +117,7 @@ namespace Transcode
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            listView1.SelectedItems.Clear();
+            listView1.FocusedItem.Remove();
         }
 
         string Assembly()
@@ -129,28 +129,77 @@ namespace Transcode
 
             //视频部分
             StringBuilder sbCom = new StringBuilder("");
-            if (checkBoxBitrate.Checked)
-            {
-                sbCom.Append($" -b:v {txbBitrate.Text}k ");
-            }
-            if (checkBoxFramerate.Checked)
-            {
-                sbCom.Append($" -r {cmbFramerate.Text} ");
-            }
             if (checkBoxHXW.Checked)
             {
-                sbCom.Append($"");
+                sbCom.Append($" -s {cmbHXW.Text}");
             }
             if (checkBoxGPU.Checked)
             {
-                if(cmbGPU.SelectedText=="Intel")
-                    sbCom.Append($"");
-                if (cmbGPU.SelectedText == "AMD")
-                    sbCom.Append($"");
-                if (cmbGPU.SelectedText == "Nvidia")
-                    sbCom.Append($"");
+                if (cmbFomart.Text == "mp4")
+                {
+                    if (cmbGPU.SelectedText == "Intel")
+                        sbCom.Append($" -c:v h264_qsv");
+                    if (cmbGPU.SelectedText == "AMD")
+                        sbCom.Append($" -c:v h264_amf");
+                    if (cmbGPU.SelectedText == "Nvidia")
+                        sbCom.Append($" -c:v h264_nvenc");
+                }
+
+                if (cmbFomart.Text == "flv")
+                {
+                    if (cmbGPU.SelectedText == "Intel")
+                        sbCom.Append($" -c:v flv_qsv");
+                    if (cmbGPU.SelectedText == "AMD")
+                        sbCom.Append($" -c:v flv_amf");
+                    if (cmbGPU.SelectedText == "Nvidia")
+                        sbCom.Append($" -c:v flv_nvenc");
+                }
+                if (cmbFomart.Text == "mpeg2")
+                {
+                    if (cmbGPU.SelectedText == "Intel")
+                        sbCom.Append($" -c:v mpeg2video_qsv");
+                    if (cmbGPU.SelectedText == "AMD")
+                        sbCom.Append($" -c:v mpeg2video_amf");
+                    if (cmbGPU.SelectedText == "Nvidia")
+                        sbCom.Append($" -c:v mpeg2video_nvenc");
+                }
             }
+            if (checkBoxBitrate.Checked)
+            {
+                sbCom.Append($" -b:v {txbBitrate.Text}k");
+            }
+            if (checkBoxFramerate.Checked)
+            {
+                sbCom.Append($" -r {cmbFramerate.Text}");
+            }
+
+
             //音频部分
+            if (chbAuFomart.Checked)
+            {
+                sbCom.Append($" -f {cbxAuFormat.Text}");
+
+                if (chbAuBit.Checked)
+                {
+                    sbCom.Append($" -b:a {txbAuBit.Text}");
+                }
+
+                if (chbAuChannel.Checked)
+                {
+                    sbCom.Append($" -ac {cbxAuChannel.Text}");
+                }
+
+                if (chbSampleBits.Checked)
+                {
+                    sbCom.Append($" s{cbxSampleBits.Text}le");
+                }
+
+                if (chbSampleRate.Checked)
+                {
+                    sbCom.Append($" -ar {cbxSampleRate.Text}");
+                }
+            }
+
 
             return sbCom.ToString();
         }
@@ -169,9 +218,7 @@ namespace Transcode
             p.StartInfo.CreateNoWindow = true;  //不显示dos程序窗口
 
             p.StartInfo.RedirectStandardInput = true;
-
             p.StartInfo.RedirectStandardOutput = true;
-
             p.StartInfo.RedirectStandardError = true;//把外部程序错误输出写到StandardError流中
 
             p.ErrorDataReceived += new DataReceivedEventHandler(p_ErrorDataReceived);
@@ -215,29 +262,32 @@ namespace Transcode
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             treeView1.Nodes.Clear();
-            textBox1.Text = Path.GetDirectoryName(listView1.FocusedItem.Text);
-            int i = listView1.FocusedItem.Index;
-            TreeNode mi = new TreeNode("媒体信息");
-            TreeNode vi = new TreeNode("视频信息");
-            TreeNode ai = new TreeNode("音频信息");
-            vi.Nodes.Add($"编码器：{videos[i].Format}");
-            vi.Nodes.Add($"大小：{videos[i].Size}");
-            vi.Nodes.Add($"时长：{videos[i].Duration}");
-            vi.Nodes.Add($"比特率：{(videos[i].Bitrate)/1024} kbps");
-            vi.Nodes.Add($"长度：{videos[i].Width}");
-            vi.Nodes.Add($"宽度：{videos[i].Height}");
-            vi.Nodes.Add($"长宽比：{videos[i].Aspectratio}");
-            vi.Nodes.Add($"帧率：{videos[i].Framerate}");
+            if (listView1.FocusedItem.Focused)
+            {
+                textBox1.Text = Path.GetDirectoryName(listView1.FocusedItem.Text);
+                int i = listView1.FocusedItem.Index;
+                TreeNode mi = new TreeNode("媒体信息");
+                TreeNode vi = new TreeNode("视频信息");
+                TreeNode ai = new TreeNode("音频信息");
+                vi.Nodes.Add($"编码器：{videos[i].Format}");
+                vi.Nodes.Add($"大小：{videos[i].Size}");
+                vi.Nodes.Add($"时长：{videos[i].Duration}");
+                vi.Nodes.Add($"比特率：{(videos[i].Bitrate) / 1024} kbps");
+                vi.Nodes.Add($"长度：{videos[i].Width}");
+                vi.Nodes.Add($"宽度：{videos[i].Height}");
+                vi.Nodes.Add($"长宽比：{videos[i].Aspectratio}");
+                vi.Nodes.Add($"帧率：{videos[i].Framerate}");
 
-            ai.Nodes.Add($"声道：{videos[i].AudioChannels}");
-            ai.Nodes.Add($"编码器：{videos[i].AudioCodec}");
-            ai.Nodes.Add($"码率：{videos[i].AudioRate}");
-            ai.Nodes.Add($"采样率：{videos[i].AudioSampleRate}");
+                ai.Nodes.Add($"声道：{videos[i].AudioChannels}");
+                ai.Nodes.Add($"编码器：{videos[i].AudioCodec}");
+                ai.Nodes.Add($"码率：{videos[i].AudioRate}");
+                ai.Nodes.Add($"采样率：{videos[i].AudioSampleRate}");
 
-            mi.Nodes.Add(vi);
-            mi.Nodes.Add(ai);
-            treeView1.Nodes.Add(mi);
-            treeView1.ExpandAll();
+                mi.Nodes.Add(vi);
+                mi.Nodes.Add(ai);
+                treeView1.Nodes.Add(mi);
+                treeView1.ExpandAll();
+            }
         }
 
         private void checkBoxGPU_CheckedChanged(object sender, EventArgs e)
@@ -303,7 +353,8 @@ namespace Transcode
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            Form frmPlayer=new Form2();
+            Form frmPlayer=new Form2(listView1.FocusedItem.Text);
+            frmPlayer.Show();
         }
     }
 }

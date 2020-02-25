@@ -37,6 +37,7 @@
             this.btnReset = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnFullScr = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -58,6 +59,7 @@
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Controls.Add(this.btnFullScr);
             this.panel2.Controls.Add(this.tbVideoTime);
             this.panel2.Controls.Add(this.trackBar2);
             this.panel2.Controls.Add(this.trackBar1);
@@ -90,6 +92,7 @@
             this.trackBar2.Size = new System.Drawing.Size(183, 35);
             this.trackBar2.TabIndex = 4;
             this.trackBar2.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackBar2.Scroll += new System.EventHandler(this.trackBar2_Scroll);
             // 
             // trackBar1
             // 
@@ -111,7 +114,7 @@
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(100, 42);
             this.btnReset.TabIndex = 2;
-            this.btnReset.Text = "关闭";
+            this.btnReset.Text = "停止";
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
@@ -130,6 +133,16 @@
             // 
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // btnFullScr
+            // 
+            this.btnFullScr.Location = new System.Drawing.Point(227, 34);
+            this.btnFullScr.Name = "btnFullScr";
+            this.btnFullScr.Size = new System.Drawing.Size(97, 42);
+            this.btnFullScr.TabIndex = 7;
+            this.btnFullScr.Text = "全屏";
+            this.btnFullScr.UseVisualStyleBackColor = true;
+            this.btnFullScr.Click += new System.EventHandler(this.btnFullScr_Click);
             // 
             // Form2
             // 
@@ -159,6 +172,7 @@
         private System.Windows.Forms.TrackBar trackBar2;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TextBox tbVideoTime;
+        private System.Windows.Forms.Button btnFullScr;
     }
 }
 

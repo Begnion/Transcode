@@ -137,6 +137,7 @@
 
 copy "Necessary\ffmpeg.exe" "$(OutDir)ffmpeg.exe"
 copy "Necessary\libvlccore.dll" "$(OutDir)libvlccore.dll"
-copy "Necessary\libvlc.dll" "$(OutDir)libvlc.dll"</PreBuildEvent>
+copy "Necessary\libvlc.dll" "$(OutDir)libvlc.dll"
+copy "Necessary\plugins\" "$(OutDir)\plugins\"</PreBuildEvent>
   </PropertyGroup>
 </Project>

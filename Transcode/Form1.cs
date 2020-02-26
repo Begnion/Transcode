@@ -117,9 +117,19 @@ namespace Transcode
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
+            int i = listView1.FocusedItem.Index;
+            videos.RemoveAt(i);
             listView1.FocusedItem.Remove();
         }
 
+        string TimeCut()
+        {
+            if (chbTimeCut.Checked)
+            {
+                return $" -ss {txbFH}:{txbFM}:{txbFS} -to {txbTH}:{txbTM}:{txbTS}  -accurate_seek";
+            }
+            return null;
+        }
         string Assembly()
         {
             if(checkBoxFast.Checked)
@@ -199,8 +209,6 @@ namespace Transcode
                     sbCom.Append($" -ar {cbxSampleRate.Text}");
                 }
             }
-
-
             return sbCom.ToString();
         }
         private void btnStart_Click(object sender, EventArgs e)
@@ -212,7 +220,7 @@ namespace Transcode
             string srcFileName = listView1.FocusedItem.Text;
             string destFileName = $"{textBox1.Text}{Path.GetFileNameWithoutExtension(listView1.FocusedItem.Text)}{cmbFomart.Text}";
 
-            p.StartInfo.Arguments = $"-i {srcFileName} {Assembly()} {destFileName}";    //执行参数
+            p.StartInfo.Arguments = $"{TimeCut()} -i {srcFileName} {Assembly()} {destFileName}";    //执行参数
 
             p.StartInfo.UseShellExecute = false;  ////不使用系统外壳程序启动进程
             p.StartInfo.CreateNoWindow = true;  //不显示dos程序窗口
@@ -354,6 +362,8 @@ namespace Transcode
         private void btnPlay_Click(object sender, EventArgs e)
         {
             Form frmPlayer=new Form2(listView1.FocusedItem.Text);
+            int i = listView1.FocusedItem.Index;
+            frmPlayer.SetBounds(300,300,videos[i].Width+19, videos[i].Height+132);
             frmPlayer.Show();
         }
 
@@ -393,6 +403,76 @@ namespace Transcode
         private void chbSampleBits_CheckedChanged(object sender, EventArgs e)
         {
             cbxSampleBits.Enabled = chbSampleBits.Checked;
+        }
+
+        private void chbTimeCut_CheckedChanged(object sender, EventArgs e)
+        {
+            txbFH.Enabled = chbTimeCut.Checked;
+            txbFM.Enabled = chbTimeCut.Checked;
+            txbFS.Enabled = chbTimeCut.Checked;
+            txbTH.Enabled = chbTimeCut.Checked;
+            txbTM.Enabled = chbTimeCut.Checked;
+            txbTS.Enabled = chbTimeCut.Checked;
+        }
+
+        private void txbFH_TextChanged(object sender, EventArgs e)
+        {
+            int iMax = 59;//首先设置上限值
+            if (string.IsNullOrEmpty(textBox1.Text)) return;
+            if (int.Parse(textBox1.Text) > iMax)
+            {
+                txbFH.Text = iMax.ToString();
+            }
+        }
+
+        private void txbFM_TextChanged(object sender, EventArgs e)
+        {
+            int iMax = 59;//首先设置上限值
+            if (string.IsNullOrEmpty(textBox1.Text)) return;
+            if (int.Parse(textBox1.Text) > iMax)
+            {
+                txbFM.Text = iMax.ToString();
+            }
+        }
+
+        private void txbFS_TextChanged(object sender, EventArgs e)
+        {
+            int iMax = 59;//首先设置上限值
+            if (string.IsNullOrEmpty(textBox1.Text)) return;
+            if (int.Parse(textBox1.Text) > iMax)
+            {
+                txbFS.Text = iMax.ToString();
+            }
+        }
+
+        private void txbTH_TextChanged(object sender, EventArgs e)
+        {
+            int iMax = 59;//首先设置上限值
+            if (string.IsNullOrEmpty(textBox1.Text)) return;
+            if (int.Parse(textBox1.Text) > iMax)
+            {
+                txbTH.Text = iMax.ToString();
+            }
+        }
+
+        private void txbTM_TextChanged(object sender, EventArgs e)
+        {
+            int iMax = 59;//首先设置上限值
+            if (string.IsNullOrEmpty(textBox1.Text)) return;
+            if (int.Parse(textBox1.Text) > iMax)
+            {
+                txbTM.Text = iMax.ToString();
+            }
+        }
+
+        private void txbTS_TextChanged(object sender, EventArgs e)
+        {
+            int iMax = 59;//首先设置上限值
+            if (string.IsNullOrEmpty(textBox1.Text)) return;
+            if (int.Parse(textBox1.Text) > iMax)
+            {
+                txbTS.Text = iMax.ToString();
+            }
         }
     }
 }

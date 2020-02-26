@@ -31,13 +31,13 @@
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnFullScr = new System.Windows.Forms.Button();
             this.tbVideoTime = new System.Windows.Forms.TextBox();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.btnReset = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btnFullScr = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -71,6 +71,16 @@
             this.panel2.Size = new System.Drawing.Size(803, 84);
             this.panel2.TabIndex = 1;
             // 
+            // btnFullScr
+            // 
+            this.btnFullScr.Location = new System.Drawing.Point(227, 34);
+            this.btnFullScr.Name = "btnFullScr";
+            this.btnFullScr.Size = new System.Drawing.Size(97, 42);
+            this.btnFullScr.TabIndex = 7;
+            this.btnFullScr.Text = "全屏";
+            this.btnFullScr.UseVisualStyleBackColor = true;
+            this.btnFullScr.Click += new System.EventHandler(this.btnFullScr_Click);
+            // 
             // tbVideoTime
             // 
             this.tbVideoTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -88,10 +98,12 @@
             this.trackBar2.AutoSize = false;
             this.trackBar2.Location = new System.Drawing.Point(617, 41);
             this.trackBar2.Margin = new System.Windows.Forms.Padding(4);
+            this.trackBar2.Maximum = 100;
             this.trackBar2.Name = "trackBar2";
             this.trackBar2.Size = new System.Drawing.Size(183, 35);
             this.trackBar2.TabIndex = 4;
             this.trackBar2.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackBar2.Value = 100;
             this.trackBar2.Scroll += new System.EventHandler(this.trackBar2_Scroll);
             // 
             // trackBar1
@@ -134,16 +146,6 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btnFullScr
-            // 
-            this.btnFullScr.Location = new System.Drawing.Point(227, 34);
-            this.btnFullScr.Name = "btnFullScr";
-            this.btnFullScr.Size = new System.Drawing.Size(97, 42);
-            this.btnFullScr.TabIndex = 7;
-            this.btnFullScr.Text = "全屏";
-            this.btnFullScr.UseVisualStyleBackColor = true;
-            this.btnFullScr.Click += new System.EventHandler(this.btnFullScr_Click);
-            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -154,6 +156,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form2";
             this.Text = "播放器";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form2_FormClosing);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();

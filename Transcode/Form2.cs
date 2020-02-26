@@ -63,8 +63,7 @@ namespace Transcode
 
         private void btnFullScr_Click(object sender, EventArgs e)
         {
-            if (isPlaying)
-                vPlayer.SetFullScreen(true);
+            vPlayer.SetFullScreen(true);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -109,6 +108,11 @@ namespace Transcode
                 vPlayer.SetVolume(trackBar2.Value);
                 trackBar2.Value = (int)vPlayer.GetVolume();
             }
+        }
+
+        private void Form2_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            vPlayer.Stop();
         }
     }
 }

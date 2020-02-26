@@ -50,13 +50,13 @@ namespace Transcode
 
         public void Pause()
         {
-            if (libvlc_media_player_ !=  IntPtr.Zero)
+            if (libvlc_media_player_ != IntPtr.Zero)
                 LibVlcAPI.libvlc_media_player_pause(libvlc_media_player_);
         }
 
         public void Stop()
         {
-            if (libvlc_media_player_ !=  IntPtr.Zero)
+            if (libvlc_media_player_ != IntPtr.Zero)
                 LibVlcAPI.libvlc_media_player_stop(libvlc_media_player_);
         }
 
@@ -153,9 +153,7 @@ namespace Transcode
             finally
             {
                 if (pMrl != IntPtr.Zero)
-                {
                     Marshal.FreeHGlobal(pMrl);
-                }
             }
         }
 

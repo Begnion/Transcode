@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Management;
+using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Transcode
 {
@@ -38,9 +41,14 @@ namespace Transcode
                 textBox1.Text=Path.GetDirectoryName(selPath.FileName);
                 listView1.Items.Add(p);
                 GetInfo(p);
+                listView1.Items[listView1.Items.Count - 1].Focused = true;
+                listView1.Items[listView1.Items.Count - 1].Selected = true;
+                btnStart.Enabled = true;
+                btnPlay.Enabled = true;
+                btnRemove.Enabled = true;
             }
         }
-        public int GetInfo(string videoPath)
+        public void GetInfo(string videoPath)
         {
             MediaInfo.MediaInfoWrapper mediaInfo = new MediaInfo.MediaInfoWrapper(videoPath);
             Video v = new Video
@@ -61,58 +69,6 @@ namespace Transcode
                 AudioSampleRate = mediaInfo.AudioSampleRate
             };
             videos.Add(v);
-            //Process p = new Process();
-
-            //p.StartInfo.FileName = path + "ffmpeg.exe";
-            //p.StartInfo.UseShellExecute = false;
-            //string srcFileName = listView1.FocusedItem.Text;
-
-            //p.StartInfo.Arguments = "-i " + srcFileName;    //执行参数
-
-            //p.StartInfo.UseShellExecute = false;  ////不使用系统外壳程序启动进程
-            //p.StartInfo.CreateNoWindow = true;  //不显示dos程序窗口
-            //p.StartInfo.RedirectStandardOutput = true;
-
-            //p.Start();
-            //p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            //string output = p.StandardOutput.ReadToEnd();
-
-            //p.WaitForExit();//阻塞等待进程结束
-            //p.Close();//关闭进程
-            //p.Dispose();//释放资源
-            //try
-            //{
-            //    ProcessBuilder builder = new ProcessBuilder();
-            //    builder.command(commands);
-            //    final Processp = builder.start();
-
-            //    //从输入流中读取视频信息  
-            //    BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-            //    StringBuffer sb = new StringBuffer();
-            //    String line = "";
-            //    while ((line = br.readLine()) != null)
-            //    {
-            //        sb.append(line);
-            //    }
-            //    br.close();
-
-            //    //从视频信息中解析时长  
-            //    String regexDuration = "Duration: (.*?), start: (.*?), bitrate: (\\d*) kb\\/s";
-            //    Pattern pattern = Pattern.compile(regexDuration);
-            //    Matcher m = pattern.matcher(sb.toString());
-            //    if (m.find())
-            //    {
-            //        int time = getTimelen(m.group(1));
-            //        log.info(video_path + ",视频时长：" + time + ", 开始时间：" + m.group(2) + ",比特率：" + m.group(3) + "kb/s");
-            //        return time;
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    e.printStackTrace();
-            //}
-
-            return 0;
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
@@ -120,6 +76,14 @@ namespace Transcode
             int i = listView1.FocusedItem.Index;
             videos.RemoveAt(i);
             listView1.FocusedItem.Remove();
+            if (listView1.Items.Count == 0)
+            {
+                btnRemove.Enabled = false;
+                btnStart.Enabled = false;
+                btnEnd.Enabled = false;
+                btnPlay.Enabled = false;
+                btnPause.Enabled = false;
+            }
         }
 
         string TimeCut()
@@ -128,7 +92,7 @@ namespace Transcode
             {
                 return $" -ss {txbFH}:{txbFM}:{txbFS} -to {txbTH}:{txbTM}:{txbTS}  -accurate_seek";
             }
-            return null;
+            return "";
         }
         string Assembly()
         {
@@ -145,7 +109,7 @@ namespace Transcode
             }
             if (checkBoxGPU.Checked)
             {
-                if (cmbFomart.Text == "mp4")
+                if (cmbFomart.Text == "mp4" | cmbFomart.Text == "mkv")
                 {
                     if (cmbGPU.SelectedText == "Intel")
                         sbCom.Append($" -c:v h264_qsv");
@@ -164,7 +128,7 @@ namespace Transcode
                     if (cmbGPU.SelectedText == "Nvidia")
                         sbCom.Append($" -c:v flv_nvenc");
                 }
-                if (cmbFomart.Text == "mpeg2")
+                if (cmbFomart.Text == "ts" | cmbFomart.Text == "mpeg2")
                 {
                     if (cmbGPU.SelectedText == "Intel")
                         sbCom.Append($" -c:v mpeg2video_qsv");
@@ -213,12 +177,25 @@ namespace Transcode
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
+            progressBar1.Maximum = videos[listView1.FocusedItem.Index].Duration;
+            btnStart.Enabled = false;
+            btnPause.Enabled = true;
+            btnEnd.Enabled = true;
             Process p = new Process();
 
             p.StartInfo.FileName = $"{path}ffmpeg.exe";
             p.StartInfo.UseShellExecute = false;
-            string srcFileName = listView1.FocusedItem.Text;
-            string destFileName = $"{textBox1.Text}{Path.GetFileNameWithoutExtension(listView1.FocusedItem.Text)}{cmbFomart.Text}";
+            //输入文件地址
+            string srcFileName = $"\"{listView1.FocusedItem.Text}\"";
+
+            //探测是否已经存在同名文件，存在则改名
+            StringBuilder destFileTemp = new StringBuilder($"{textBox1.Text}\\{Path.GetFileNameWithoutExtension(listView1.FocusedItem.Text)}");
+            for (; File.Exists($"{destFileTemp}.{cmbFomart.Text}"); )
+                destFileTemp.Append("副本");
+            destFileTemp.Append($".{cmbFomart.Text}\"");
+
+            //生成输出文件地址
+            string destFileName = $"\"{destFileTemp.ToString()}";
 
             p.StartInfo.Arguments = $"{TimeCut()} -i {srcFileName} {Assembly()} {destFileName}";    //执行参数
 
@@ -228,29 +205,69 @@ namespace Transcode
             p.StartInfo.RedirectStandardInput = true;
             p.StartInfo.RedirectStandardOutput = true;
             p.StartInfo.RedirectStandardError = true;//把外部程序错误输出写到StandardError流中
-
+            
             p.ErrorDataReceived += new DataReceivedEventHandler(p_ErrorDataReceived);
 
             p.OutputDataReceived += new DataReceivedEventHandler(p_OutputDataReceived);
 
             p.StartInfo.UseShellExecute = false;
 
+            //更改使用Exited事件，不阻塞，保持窗口可响应。
+            p.Exited += new EventHandler(p_Exited);
+
             p.Start();
 
             p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-
+            
             p.BeginErrorReadLine();//开始异步读取
-
-            p.WaitForExit();//阻塞等待进程结束
+            
+            //p.WaitForExit();//阻塞等待进程结束
 
             p.Close();//关闭进程
 
             p.Dispose();//释放资源
+
         }
-        private static void p_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        private void p_Exited(object sender, System.EventArgs e)
         {
-            Console.WriteLine(e.Data);
+            btnStart.Enabled = true;
+            btnPause.Enabled = false;
+            btnEnd.Enabled = false;
         }
+        private void p_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            string s = e.Data;
+            
+            Regex regex = new Regex("time=(\\d*):(\\d*):(\\d*).", RegexOptions.Compiled);
+            
+            if (s != null)
+            {
+                Match m = regex.Match(s);
+                if (m.Success)
+                {
+                    int time = (int.Parse(m.Groups[1].Value)) * 3600 + (int.Parse(m.Groups[2].Value)) * 60 +
+                               (int.Parse(m.Groups[3].Value));
+                    
+                    this.SetProcess(time);
+                    
+                }
+            }
+        }
+        public delegate void SetProcessCallback(int time);
+        public void SetProcess(int time)
+        {
+            if (progressBar1.InvokeRequired)
+            {
+                SetProcessCallback d = SetProcess;
+                Invoke(d, time);
+            }
+            else
+            {
+                progressBar1.Value = time;
+                
+            }
+        }
+
 
         private static void p_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
@@ -326,7 +343,6 @@ namespace Transcode
             if (checkBoxFast.Checked)
             {
                 cmbHXW.Enabled = false;
-                cmbFomart.Enabled = false;
                 cmbFramerate.Enabled = false;
                 cmbGPU.Enabled = false;
                 txbBitrate.Enabled = false;
@@ -338,7 +354,6 @@ namespace Transcode
             else
             {
                 cmbHXW.Enabled = true;
-                cmbFomart.Enabled = true;
                 cmbFramerate.Enabled = true;
                 cmbGPU.Enabled = true;
                 txbBitrate.Enabled = true;
@@ -472,6 +487,53 @@ namespace Transcode
             if (int.Parse(textBox1.Text) > iMax)
             {
                 txbTS.Text = iMax.ToString();
+            }
+        }
+
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            btnStart.Enabled = false;
+            Process[] processes = Process.GetProcessesByName("ffmpeg");
+            if (btnPause.Text == "暂停")
+            {
+                foreach (Process p in processes)
+                {
+                    ProcessMgr.SuspendProcess(p.Id);
+                }
+
+                btnPause.Text = "继续";
+            }
+            else
+            {
+                foreach (Process p in processes)
+                {
+                    ProcessMgr.ResumeProcess(p.Id);
+                }
+                btnPause.Text = "暂停";
+            }
+        }
+    
+
+        private void btnEnd_Click(object sender, EventArgs e)
+        {
+            Process[] processes = Process.GetProcessesByName("ffmpeg");
+            foreach (Process p in processes)
+            {
+                p.Kill();
+                p.Close();
+            }
+            btnStart.Enabled = true;
+            btnPause.Enabled = false;
+            btnEnd.Enabled = false;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Process[] processes = Process.GetProcessesByName("ffmpeg");
+            foreach (Process p in processes)
+            {
+                p.Kill();
+                p.Close();
             }
         }
     }

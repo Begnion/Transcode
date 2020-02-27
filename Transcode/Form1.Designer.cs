@@ -68,20 +68,21 @@
             this.txbAuBit = new System.Windows.Forms.TextBox();
             this.chbAuBit = new System.Windows.Forms.CheckBox();
             this.tabTime = new System.Windows.Forms.TabPage();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label4 = new System.Windows.Forms.Label();
-            this.chbTimeCut = new System.Windows.Forms.CheckBox();
-            this.txbFH = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txbFM = new System.Windows.Forms.TextBox();
-            this.txbFS = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.txbTS = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txbTM = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.txbTH = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
+            this.txbFS = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txbFM = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txbFH = new System.Windows.Forms.TextBox();
+            this.chbTimeCut = new System.Windows.Forms.CheckBox();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnEnd = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabVideo.SuspendLayout();
             this.tabAudio.SuspendLayout();
@@ -100,6 +101,7 @@
             // 
             // btnRemove
             // 
+            this.btnRemove.Enabled = false;
             this.btnRemove.Location = new System.Drawing.Point(79, 13);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(60, 60);
@@ -110,6 +112,7 @@
             // 
             // btnPlay
             // 
+            this.btnPlay.Enabled = false;
             this.btnPlay.Location = new System.Drawing.Point(145, 13);
             this.btnPlay.Name = "btnPlay";
             this.btnPlay.Size = new System.Drawing.Size(60, 60);
@@ -120,6 +123,7 @@
             // 
             // btnStart
             // 
+            this.btnStart.Enabled = false;
             this.btnStart.Location = new System.Drawing.Point(211, 13);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(60, 60);
@@ -130,17 +134,19 @@
             // 
             // btnPause
             // 
+            this.btnPause.Enabled = false;
             this.btnPause.Location = new System.Drawing.Point(277, 13);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(60, 60);
             this.btnPause.TabIndex = 4;
             this.btnPause.Text = "暂停";
             this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
             // labPath
             // 
             this.labPath.AutoSize = true;
-            this.labPath.Location = new System.Drawing.Point(406, 13);
+            this.labPath.Location = new System.Drawing.Point(442, 13);
             this.labPath.Name = "labPath";
             this.labPath.Size = new System.Drawing.Size(82, 15);
             this.labPath.TabIndex = 5;
@@ -148,9 +154,9 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(409, 32);
+            this.textBox1.Location = new System.Drawing.Point(445, 32);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(348, 25);
+            this.textBox1.Size = new System.Drawing.Size(312, 25);
             this.textBox1.TabIndex = 6;
             // 
             // btnSelect
@@ -167,6 +173,7 @@
             // 
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(13, 94);
+            this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(536, 346);
             this.listView1.TabIndex = 8;
@@ -572,77 +579,14 @@
             this.tabTime.Text = "剪切";
             this.tabTime.UseVisualStyleBackColor = true;
             // 
-            // progressBar1
+            // label11
             // 
-            this.progressBar1.Location = new System.Drawing.Point(113, 463);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(707, 23);
-            this.progressBar1.TabIndex = 12;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 463);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(97, 15);
-            this.label4.TabIndex = 14;
-            this.label4.Text = "当前任务进度";
-            // 
-            // chbTimeCut
-            // 
-            this.chbTimeCut.AutoSize = true;
-            this.chbTimeCut.Location = new System.Drawing.Point(79, 75);
-            this.chbTimeCut.Name = "chbTimeCut";
-            this.chbTimeCut.Size = new System.Drawing.Size(104, 19);
-            this.chbTimeCut.TabIndex = 0;
-            this.chbTimeCut.Text = "截取时间：";
-            this.chbTimeCut.UseVisualStyleBackColor = true;
-            this.chbTimeCut.CheckedChanged += new System.EventHandler(this.chbTimeCut_CheckedChanged);
-            // 
-            // txbFH
-            // 
-            this.txbFH.Location = new System.Drawing.Point(189, 71);
-            this.txbFH.Name = "txbFH";
-            this.txbFH.Size = new System.Drawing.Size(30, 25);
-            this.txbFH.TabIndex = 1;
-            this.txbFH.Text = "00";
-            this.txbFH.TextChanged += new System.EventHandler(this.txbFH_TextChanged);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(225, 75);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(15, 15);
-            this.label7.TabIndex = 2;
-            this.label7.Text = ":";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(282, 75);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(15, 15);
-            this.label8.TabIndex = 4;
-            this.label8.Text = ":";
-            // 
-            // txbFM
-            // 
-            this.txbFM.Location = new System.Drawing.Point(246, 71);
-            this.txbFM.Name = "txbFM";
-            this.txbFM.Size = new System.Drawing.Size(30, 25);
-            this.txbFM.TabIndex = 3;
-            this.txbFM.Text = "00";
-            this.txbFM.TextChanged += new System.EventHandler(this.txbFM_TextChanged);
-            // 
-            // txbFS
-            // 
-            this.txbFS.Location = new System.Drawing.Point(303, 71);
-            this.txbFS.Name = "txbFS";
-            this.txbFS.Size = new System.Drawing.Size(30, 25);
-            this.txbFS.TabIndex = 5;
-            this.txbFS.Text = "00";
-            this.txbFS.TextChanged += new System.EventHandler(this.txbFS_TextChanged);
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(372, 78);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(22, 15);
+            this.label11.TabIndex = 11;
+            this.label11.Text = "到";
             // 
             // txbTS
             // 
@@ -689,20 +633,95 @@
             this.txbTH.Text = "00";
             this.txbTH.TextChanged += new System.EventHandler(this.txbTH_TextChanged);
             // 
-            // label11
+            // txbFS
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(372, 78);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(22, 15);
-            this.label11.TabIndex = 11;
-            this.label11.Text = "到";
+            this.txbFS.Location = new System.Drawing.Point(303, 71);
+            this.txbFS.Name = "txbFS";
+            this.txbFS.Size = new System.Drawing.Size(30, 25);
+            this.txbFS.TabIndex = 5;
+            this.txbFS.Text = "00";
+            this.txbFS.TextChanged += new System.EventHandler(this.txbFS_TextChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(282, 75);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(15, 15);
+            this.label8.TabIndex = 4;
+            this.label8.Text = ":";
+            // 
+            // txbFM
+            // 
+            this.txbFM.Location = new System.Drawing.Point(246, 71);
+            this.txbFM.Name = "txbFM";
+            this.txbFM.Size = new System.Drawing.Size(30, 25);
+            this.txbFM.TabIndex = 3;
+            this.txbFM.Text = "00";
+            this.txbFM.TextChanged += new System.EventHandler(this.txbFM_TextChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(225, 75);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(15, 15);
+            this.label7.TabIndex = 2;
+            this.label7.Text = ":";
+            // 
+            // txbFH
+            // 
+            this.txbFH.Location = new System.Drawing.Point(189, 71);
+            this.txbFH.Name = "txbFH";
+            this.txbFH.Size = new System.Drawing.Size(30, 25);
+            this.txbFH.TabIndex = 1;
+            this.txbFH.Text = "00";
+            this.txbFH.TextChanged += new System.EventHandler(this.txbFH_TextChanged);
+            // 
+            // chbTimeCut
+            // 
+            this.chbTimeCut.AutoSize = true;
+            this.chbTimeCut.Location = new System.Drawing.Point(79, 75);
+            this.chbTimeCut.Name = "chbTimeCut";
+            this.chbTimeCut.Size = new System.Drawing.Size(104, 19);
+            this.chbTimeCut.TabIndex = 0;
+            this.chbTimeCut.Text = "截取时间：";
+            this.chbTimeCut.UseVisualStyleBackColor = true;
+            this.chbTimeCut.CheckedChanged += new System.EventHandler(this.chbTimeCut_CheckedChanged);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(113, 463);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(707, 23);
+            this.progressBar1.TabIndex = 12;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(10, 463);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(97, 15);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "当前任务进度";
+            // 
+            // btnEnd
+            // 
+            this.btnEnd.Enabled = false;
+            this.btnEnd.Location = new System.Drawing.Point(343, 13);
+            this.btnEnd.Name = "btnEnd";
+            this.btnEnd.Size = new System.Drawing.Size(60, 60);
+            this.btnEnd.TabIndex = 15;
+            this.btnEnd.Text = "终止";
+            this.btnEnd.UseVisualStyleBackColor = true;
+            this.btnEnd.Click += new System.EventHandler(this.btnEnd_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(836, 725);
+            this.Controls.Add(this.btnEnd);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.tabControl1);
@@ -719,6 +738,7 @@
             this.Controls.Add(this.btnAdd);
             this.Name = "Form1";
             this.Text = "视频转换";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.tabControl1.ResumeLayout(false);
             this.tabVideo.ResumeLayout(false);
             this.tabVideo.PerformLayout();
@@ -787,6 +807,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txbFH;
         private System.Windows.Forms.CheckBox chbTimeCut;
+        private System.Windows.Forms.Button btnEnd;
     }
 }
 

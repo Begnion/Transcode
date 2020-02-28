@@ -46,6 +46,7 @@ namespace Transcode
                 btnStart.Enabled = true;
                 btnPlay.Enabled = true;
                 btnRemove.Enabled = true;
+                cmbFomart.SelectedIndex = 0;
             }
         }
         public void GetInfo(string videoPath)
@@ -177,7 +178,7 @@ namespace Transcode
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
-            progressBar1.Maximum = videos[listView1.FocusedItem.Index].Duration;
+            progressBar1.Maximum = (videos[listView1.FocusedItem.Index].Duration)/1000;
             btnStart.Enabled = false;
             btnPause.Enabled = true;
             btnEnd.Enabled = true;
@@ -264,7 +265,6 @@ namespace Transcode
             else
             {
                 progressBar1.Value = time;
-                
             }
         }
 
@@ -331,11 +331,27 @@ namespace Transcode
             if (gpu.Contains("Nvidia"))
                 cmbGPU.Items.Add("Nvidia");
             cmbGPU.Enabled = checkBoxGPU.Checked;
+            if (checkBoxGPU.Checked)
+            {
+                cmbGPU.SelectedIndex = 0;
+            }
+            else
+            {
+                cmbGPU.SelectedItem = null;
+            }
         }
 
         private void checkBoxHXW_CheckedChanged(object sender, EventArgs e)
         {
             cmbHXW.Enabled = checkBoxHXW.Checked;
+            if (checkBoxHXW.Checked)
+            {
+                cmbHXW.SelectedIndex = 0;
+            }
+            else
+            {
+                cmbHXW.SelectedItem = null;
+            }
         }
 
         private void checkBoxFast_CheckedChanged(object sender, EventArgs e)
@@ -367,6 +383,14 @@ namespace Transcode
         private void checkBoxFramerate_CheckedChanged(object sender, EventArgs e)
         {
             cmbFramerate.Enabled = checkBoxFramerate.Checked;
+            if(checkBoxFramerate.Checked)
+            {
+                cmbFramerate.SelectedIndex = 0;
+            }
+            else
+            {
+                cmbFramerate.SelectedItem = null;
+            }
         }
 
         private void checkBoxBitrate_CheckedChanged(object sender, EventArgs e)
@@ -390,6 +414,8 @@ namespace Transcode
                 chbAuBit.Enabled = true;
                 chbSampleBits.Enabled = true;
                 chbSampleRate.Enabled = true;
+                cbxAuFormat.Enabled = true;
+                cbxAuFormat.SelectedIndex = 0;
             }
             else
             {
@@ -397,6 +423,8 @@ namespace Transcode
                 chbAuBit.Enabled = false;
                 chbSampleBits.Enabled = false;
                 chbSampleRate.Enabled = false;
+                cbxAuFormat.Enabled = false;
+                cbxAuFormat.SelectedItem = null;
             }
         }
 
@@ -408,16 +436,28 @@ namespace Transcode
         private void chbAuChannel_CheckedChanged(object sender, EventArgs e)
         {
             cbxAuChannel.Enabled = chbAuChannel.Checked;
+            if (chbAuChannel.Checked)
+                cbxAuChannel.SelectedIndex = 0;
+            else
+                cbxAuChannel.SelectedItem = null;
         }
 
         private void chbSampleRate_CheckedChanged(object sender, EventArgs e)
         {
             cbxSampleRate.Enabled = chbSampleRate.Checked;
+            if (chbSampleRate.Checked)
+                cbxSampleRate.SelectedIndex = 0;
+            else
+                cbxSampleRate.SelectedItem = null;
         }
 
         private void chbSampleBits_CheckedChanged(object sender, EventArgs e)
         {
             cbxSampleBits.Enabled = chbSampleBits.Checked;
+            if (chbSampleBits.Checked)
+                cbxSampleBits.SelectedIndex = 0;
+            else
+                cbxSampleBits.SelectedItem = null;
         }
 
         private void chbTimeCut_CheckedChanged(object sender, EventArgs e)
@@ -429,65 +469,46 @@ namespace Transcode
             txbTM.Enabled = chbTimeCut.Checked;
             txbTS.Enabled = chbTimeCut.Checked;
         }
-
-        private void txbFH_TextChanged(object sender, EventArgs e)
+        private void SetMaxValue(TextBox txtTmp)
         {
             int iMax = 59;//首先设置上限值
-            if (string.IsNullOrEmpty(textBox1.Text)) return;
-            if (int.Parse(textBox1.Text) > iMax)
+            if (txtTmp == null || string.IsNullOrEmpty(txtTmp.Text)) return;
+            if (int.TryParse(txtTmp.Text, out int res))
             {
-                txbFH.Text = iMax.ToString();
+                if (res > iMax)
+                    txtTmp.Text = iMax.ToString();
             }
+            else
+                txtTmp.Text = string.Empty;
+        }
+        private void txbFH_TextChanged(object sender, EventArgs e)
+        {
+            SetMaxValue(sender as TextBox);
         }
 
         private void txbFM_TextChanged(object sender, EventArgs e)
         {
-            int iMax = 59;//首先设置上限值
-            if (string.IsNullOrEmpty(textBox1.Text)) return;
-            if (int.Parse(textBox1.Text) > iMax)
-            {
-                txbFM.Text = iMax.ToString();
-            }
+            SetMaxValue(sender as TextBox);
         }
 
         private void txbFS_TextChanged(object sender, EventArgs e)
         {
-            int iMax = 59;//首先设置上限值
-            if (string.IsNullOrEmpty(textBox1.Text)) return;
-            if (int.Parse(textBox1.Text) > iMax)
-            {
-                txbFS.Text = iMax.ToString();
-            }
+            SetMaxValue(sender as TextBox);
         }
 
         private void txbTH_TextChanged(object sender, EventArgs e)
         {
-            int iMax = 59;//首先设置上限值
-            if (string.IsNullOrEmpty(textBox1.Text)) return;
-            if (int.Parse(textBox1.Text) > iMax)
-            {
-                txbTH.Text = iMax.ToString();
-            }
+            SetMaxValue(sender as TextBox);
         }
 
         private void txbTM_TextChanged(object sender, EventArgs e)
         {
-            int iMax = 59;//首先设置上限值
-            if (string.IsNullOrEmpty(textBox1.Text)) return;
-            if (int.Parse(textBox1.Text) > iMax)
-            {
-                txbTM.Text = iMax.ToString();
-            }
+            SetMaxValue(sender as TextBox);
         }
 
         private void txbTS_TextChanged(object sender, EventArgs e)
         {
-            int iMax = 59;//首先设置上限值
-            if (string.IsNullOrEmpty(textBox1.Text)) return;
-            if (int.Parse(textBox1.Text) > iMax)
-            {
-                txbTS.Text = iMax.ToString();
-            }
+            SetMaxValue(sender as TextBox);
         }
 
         private void btnPause_Click(object sender, EventArgs e)

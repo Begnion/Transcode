@@ -263,6 +263,7 @@
             // 
             // cmbHXW
             // 
+            this.cmbHXW.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbHXW.Enabled = false;
             this.cmbHXW.FormattingEnabled = true;
             this.cmbHXW.Items.AddRange(new object[] {
@@ -308,6 +309,7 @@
             // 
             // cmbGPU
             // 
+            this.cmbGPU.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbGPU.Enabled = false;
             this.cmbGPU.FormattingEnabled = true;
             this.cmbGPU.Location = new System.Drawing.Point(517, 65);
@@ -328,6 +330,7 @@
             // 
             // cmbFramerate
             // 
+            this.cmbFramerate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbFramerate.Enabled = false;
             this.cmbFramerate.FormattingEnabled = true;
             this.cmbFramerate.Items.AddRange(new object[] {
@@ -345,6 +348,7 @@
             // 
             // cmbFomart
             // 
+            this.cmbFomart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbFomart.FormattingEnabled = true;
             this.cmbFomart.Items.AddRange(new object[] {
             "mp4",
@@ -429,6 +433,7 @@
             // 
             // cbxSampleBits
             // 
+            this.cbxSampleBits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxSampleBits.Enabled = false;
             this.cbxSampleBits.FormattingEnabled = true;
             this.cbxSampleBits.Items.AddRange(new object[] {
@@ -459,6 +464,7 @@
             // 
             // cbxSampleRate
             // 
+            this.cbxSampleRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxSampleRate.Enabled = false;
             this.cbxSampleRate.FormattingEnabled = true;
             this.cbxSampleRate.Items.AddRange(new object[] {
@@ -489,6 +495,7 @@
             // 
             // cbxAuChannel
             // 
+            this.cbxAuChannel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxAuChannel.Enabled = false;
             this.cbxAuChannel.FormattingEnabled = true;
             this.cbxAuChannel.Items.AddRange(new object[] {
@@ -515,6 +522,7 @@
             // 
             // cbxAuFormat
             // 
+            this.cbxAuFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxAuFormat.Enabled = false;
             this.cbxAuFormat.FormattingEnabled = true;
             this.cbxAuFormat.Items.AddRange(new object[] {

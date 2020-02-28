@@ -61,9 +61,20 @@ namespace Transcode
             isPlaying = false;
         }
 
+        private Rectangle rptemp;
+        private Rectangle rftemp;
+        private bool isFullScreen=false;
         private void btnFullScr_Click(object sender, EventArgs e)
         {
+            rptemp = panel1.Bounds;
+            rftemp = Bounds;
+            FormBorderStyle = FormBorderStyle.None;
+            WindowState = FormWindowState.Maximized;
+            panel1.Size = Size;
+            panel2.Hide();
             vPlayer.SetFullScreen(true);
+            isFullScreen = true;
+            panel1.Focus();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -113,6 +124,20 @@ namespace Transcode
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)
         {
             vPlayer.Stop();
+        }
+
+        private void panel1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape && isFullScreen)
+            {
+                panel1.SetBounds(0,1,Width-19,Height-132);
+                this.Bounds = rftemp;
+                FormBorderStyle = FormBorderStyle.Sizable;
+                WindowState = FormWindowState.Normal;
+                panel2.Show();
+                vPlayer.SetFullScreen(false);
+                isFullScreen = false;
+            }
         }
     }
 }

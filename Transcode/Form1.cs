@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.IO;
 using System.Management;
-using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
+using System.Windows.Forms;
 
 namespace Transcode
 {
@@ -95,7 +88,7 @@ namespace Transcode
             }
             return "";
         }
-        string Assembly()
+        string Assemble()
         {
             if(checkBoxFast.Checked)
             {
@@ -104,6 +97,7 @@ namespace Transcode
 
             //视频部分
             StringBuilder sbCom = new StringBuilder("");
+            sbCom.Append($" -f {cmbFomart.Text}");
             if (checkBoxHXW.Checked)
             {
                 sbCom.Append($" -s {cmbHXW.Text}");
@@ -139,7 +133,7 @@ namespace Transcode
                         sbCom.Append($" -c:v mpeg2video_nvenc");
                 }
             }
-            if (checkBoxBitrate.Checked)
+            if (checkBoxBitrate.Checked && txbBitrate.Text!=null)
             {
                 sbCom.Append($" -b:v {txbBitrate.Text}k");
             }
@@ -156,7 +150,7 @@ namespace Transcode
 
                 if (chbAuBit.Checked)
                 {
-                    sbCom.Append($" -b:a {txbAuBit.Text}");
+                    sbCom.Append($" -b:a {txbAuBit.Text}k");
                 }
 
                 if (chbAuChannel.Checked)
@@ -176,13 +170,14 @@ namespace Transcode
             }
             return sbCom.ToString();
         }
+        int ProcessID;
         private void btnStart_Click(object sender, EventArgs e)
         {
             progressBar1.Maximum = (videos[listView1.FocusedItem.Index].Duration)/1000;
             btnStart.Enabled = false;
             btnPause.Enabled = true;
             btnEnd.Enabled = true;
-            Process p = new Process();
+            Process p = new Process();          
 
             p.StartInfo.FileName = $"{path}ffmpeg.exe";
             p.StartInfo.UseShellExecute = false;
@@ -198,7 +193,7 @@ namespace Transcode
             //生成输出文件地址
             string destFileName = $"\"{destFileTemp.ToString()}";
 
-            p.StartInfo.Arguments = $"{TimeCut()} -i {srcFileName} {Assembly()} {destFileName}";    //执行参数
+            p.StartInfo.Arguments = $"{TimeCut()} -i {srcFileName} {Assemble()} {destFileName}";    //执行参数
 
             p.StartInfo.UseShellExecute = false;  ////不使用系统外壳程序启动进程
             p.StartInfo.CreateNoWindow = true;  //不显示dos程序窗口
@@ -212,11 +207,14 @@ namespace Transcode
             p.OutputDataReceived += new DataReceivedEventHandler(p_OutputDataReceived);
 
             p.StartInfo.UseShellExecute = false;
-
+            //设置异步时允许使用Exited的时间
+            p.EnableRaisingEvents = true;
             //更改使用Exited事件，不阻塞，保持窗口可响应。
             p.Exited += new EventHandler(p_Exited);
 
             p.Start();
+
+            ProcessID = p.Id;
 
             p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             
@@ -224,16 +222,29 @@ namespace Transcode
             
             //p.WaitForExit();//阻塞等待进程结束
 
-            p.Close();//关闭进程
+            //p.Close();//关闭进程
 
-            p.Dispose();//释放资源
+            //p.Dispose();//释放资源
 
         }
         private void p_Exited(object sender, System.EventArgs e)
         {
-            btnStart.Enabled = true;
-            btnPause.Enabled = false;
-            btnEnd.Enabled = false;
+            SetButton();
+        }
+        public delegate void SetButtonCallback();
+        public void SetButton()
+        {
+            if (progressBar1.InvokeRequired)
+            {
+                SetButtonCallback d = SetButton;
+                Invoke(d);
+            }
+            else
+            {
+                btnStart.Enabled = true;
+                btnPause.Enabled = false;
+                btnEnd.Enabled = false;
+            }
         }
         private void p_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
@@ -249,17 +260,16 @@ namespace Transcode
                     int time = (int.Parse(m.Groups[1].Value)) * 3600 + (int.Parse(m.Groups[2].Value)) * 60 +
                                (int.Parse(m.Groups[3].Value));
                     
-                    this.SetProcess(time);
-                    
+                    SetProgress(time);
                 }
             }
         }
         public delegate void SetProcessCallback(int time);
-        public void SetProcess(int time)
+        public void SetProgress(int time)
         {
             if (progressBar1.InvokeRequired)
             {
-                SetProcessCallback d = SetProcess;
+                SetProcessCallback d = SetProgress;
                 Invoke(d, time);
             }
             else
@@ -314,7 +324,18 @@ namespace Transcode
                 treeView1.ExpandAll();
             }
         }
-
+        private void SetSelectedIndex(CheckBox chbTmp,ComboBox cmbTmp)
+        {           
+            if (chbTmp == null || cmbTmp==null) return;
+            if (chbTmp.Checked)
+            {
+                cmbTmp.SelectedIndex = 0;
+            }
+            else
+            {
+                cmbTmp.SelectedItem = null;
+            }
+        }
         private void checkBoxGPU_CheckedChanged(object sender, EventArgs e)
         {
             StringBuilder sb = new StringBuilder("");
@@ -331,27 +352,13 @@ namespace Transcode
             if (gpu.Contains("Nvidia"))
                 cmbGPU.Items.Add("Nvidia");
             cmbGPU.Enabled = checkBoxGPU.Checked;
-            if (checkBoxGPU.Checked)
-            {
-                cmbGPU.SelectedIndex = 0;
-            }
-            else
-            {
-                cmbGPU.SelectedItem = null;
-            }
+            SetSelectedIndex(checkBoxGPU,cmbGPU);
         }
 
         private void checkBoxHXW_CheckedChanged(object sender, EventArgs e)
         {
             cmbHXW.Enabled = checkBoxHXW.Checked;
-            if (checkBoxHXW.Checked)
-            {
-                cmbHXW.SelectedIndex = 0;
-            }
-            else
-            {
-                cmbHXW.SelectedItem = null;
-            }
+            SetSelectedIndex(checkBoxHXW,cmbHXW);
         }
 
         private void checkBoxFast_CheckedChanged(object sender, EventArgs e)
@@ -383,14 +390,7 @@ namespace Transcode
         private void checkBoxFramerate_CheckedChanged(object sender, EventArgs e)
         {
             cmbFramerate.Enabled = checkBoxFramerate.Checked;
-            if(checkBoxFramerate.Checked)
-            {
-                cmbFramerate.SelectedIndex = 0;
-            }
-            else
-            {
-                cmbFramerate.SelectedItem = null;
-            }
+            SetSelectedIndex(checkBoxFramerate,cmbFramerate);
         }
 
         private void checkBoxBitrate_CheckedChanged(object sender, EventArgs e)
@@ -436,28 +436,19 @@ namespace Transcode
         private void chbAuChannel_CheckedChanged(object sender, EventArgs e)
         {
             cbxAuChannel.Enabled = chbAuChannel.Checked;
-            if (chbAuChannel.Checked)
-                cbxAuChannel.SelectedIndex = 0;
-            else
-                cbxAuChannel.SelectedItem = null;
+            SetSelectedIndex(chbAuChannel,cbxAuChannel);
         }
 
         private void chbSampleRate_CheckedChanged(object sender, EventArgs e)
         {
             cbxSampleRate.Enabled = chbSampleRate.Checked;
-            if (chbSampleRate.Checked)
-                cbxSampleRate.SelectedIndex = 0;
-            else
-                cbxSampleRate.SelectedItem = null;
+            SetSelectedIndex(chbSampleRate,cbxSampleRate);
         }
 
         private void chbSampleBits_CheckedChanged(object sender, EventArgs e)
         {
             cbxSampleBits.Enabled = chbSampleBits.Checked;
-            if (chbSampleBits.Checked)
-                cbxSampleBits.SelectedIndex = 0;
-            else
-                cbxSampleBits.SelectedItem = null;
+            SetSelectedIndex(chbSampleBits,cbxSampleBits);
         }
 
         private void chbTimeCut_CheckedChanged(object sender, EventArgs e)
@@ -469,6 +460,7 @@ namespace Transcode
             txbTM.Enabled = chbTimeCut.Checked;
             txbTS.Enabled = chbTimeCut.Checked;
         }
+
         private void SetMaxValue(TextBox txtTmp)
         {
             int iMax = 59;//首先设置上限值
@@ -513,23 +505,15 @@ namespace Transcode
 
         private void btnPause_Click(object sender, EventArgs e)
         {
-            btnStart.Enabled = false;
-            Process[] processes = Process.GetProcessesByName("ffmpeg");
+            Process p = Process.GetProcessById(ProcessID);
             if (btnPause.Text == "暂停")
             {
-                foreach (Process p in processes)
-                {
-                    ProcessMgr.SuspendProcess(p.Id);
-                }
-
+                ProcessMgr.SuspendProcess(p.Id);
                 btnPause.Text = "继续";
             }
             else
             {
-                foreach (Process p in processes)
-                {
-                    ProcessMgr.ResumeProcess(p.Id);
-                }
+                ProcessMgr.ResumeProcess(p.Id);
                 btnPause.Text = "暂停";
             }
         }
@@ -537,25 +521,58 @@ namespace Transcode
 
         private void btnEnd_Click(object sender, EventArgs e)
         {
-            Process[] processes = Process.GetProcessesByName("ffmpeg");
-            foreach (Process p in processes)
+            try
             {
+                Process p = Process.GetProcessById(ProcessID);
                 p.Kill();
                 p.Close();
+
+                btnStart.Enabled = true;
+                btnPause.Enabled = false;
+                btnEnd.Enabled = false;
             }
-            btnStart.Enabled = true;
-            btnPause.Enabled = false;
-            btnEnd.Enabled = false;
+            catch (Exception exception)
+            {
+                throw;
+            }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Process[] processes = Process.GetProcessesByName("ffmpeg");
-            foreach (Process p in processes)
+            try
             {
+                Process p = Process.GetProcessById(ProcessID);
                 p.Kill();
                 p.Close();
             }
+            catch
+            { }
+        }
+
+        private void SetBitrate(TextBox txtTmp,bool isVideo)
+        {
+            int iMax;
+            if(isVideo)
+                iMax = 20000;
+            else
+                iMax = 320;
+            if (txtTmp == null || string.IsNullOrEmpty(txtTmp.Text)) return;
+            if (int.TryParse(txtTmp.Text, out int res))
+            {
+                if (res > iMax)
+                    txtTmp.Text = iMax.ToString();
+            }
+            else
+                txtTmp.Text = string.Empty;
+        }
+        private void txbBitrate_TextChanged(object sender, EventArgs e)
+        {
+            SetBitrate(sender as TextBox,true);
+        }
+
+        private void txbAuBit_TextChanged(object sender, EventArgs e)
+        {
+            SetBitrate(sender as TextBox,false);
         }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 
 namespace Transcode
 {
@@ -61,16 +56,15 @@ namespace Transcode
             isPlaying = false;
         }
 
-        private Rectangle rptemp;
+        private Size stemp;
         private Rectangle rftemp;
         private bool isFullScreen=false;
         private void btnFullScr_Click(object sender, EventArgs e)
         {
-            rptemp = panel1.Bounds;
             rftemp = Bounds;
+            //stemp = panel1.Size;
             FormBorderStyle = FormBorderStyle.None;
-            WindowState = FormWindowState.Maximized;
-            panel1.Size = Size;
+            WindowState = FormWindowState.Maximized;           
             panel2.Hide();
             vPlayer.SetFullScreen(true);
             isFullScreen = true;
@@ -129,12 +123,12 @@ namespace Transcode
         private void panel1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             if (e.KeyCode == Keys.Escape && isFullScreen)
-            {
-                panel1.SetBounds(0,1,Width-19,Height-132);
+            {  
                 this.Bounds = rftemp;
                 FormBorderStyle = FormBorderStyle.Sizable;
-                WindowState = FormWindowState.Normal;
+                WindowState = FormWindowState.Normal; 
                 panel2.Show();
+                //panel1.Size = stemp;
                 vPlayer.SetFullScreen(false);
                 isFullScreen = false;
             }

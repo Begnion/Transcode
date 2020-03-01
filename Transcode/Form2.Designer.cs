@@ -45,31 +45,28 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.Black;
-            this.panel1.Location = new System.Drawing.Point(0, 1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(803, 450);
+            this.panel1.Size = new System.Drawing.Size(804, 451);
             this.panel1.TabIndex = 0;
             this.panel1.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.panel1_PreviewKeyDown);
             // 
             // panel2
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.btnFullScr);
             this.panel2.Controls.Add(this.tbVideoTime);
             this.panel2.Controls.Add(this.trackBar2);
             this.panel2.Controls.Add(this.trackBar1);
             this.panel2.Controls.Add(this.btnReset);
             this.panel2.Controls.Add(this.btnStart);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel2.Location = new System.Drawing.Point(0, 451);
             this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(803, 84);
+            this.panel2.Size = new System.Drawing.Size(804, 84);
             this.panel2.TabIndex = 1;
             // 
             // btnFullScr
@@ -86,7 +83,7 @@
             // 
             this.tbVideoTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbVideoTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbVideoTime.Location = new System.Drawing.Point(465, 41);
+            this.tbVideoTime.Location = new System.Drawing.Point(466, 41);
             this.tbVideoTime.Margin = new System.Windows.Forms.Padding(4);
             this.tbVideoTime.Name = "tbVideoTime";
             this.tbVideoTime.ReadOnly = true;
@@ -97,7 +94,7 @@
             // 
             this.trackBar2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar2.AutoSize = false;
-            this.trackBar2.Location = new System.Drawing.Point(617, 41);
+            this.trackBar2.Location = new System.Drawing.Point(618, 41);
             this.trackBar2.Margin = new System.Windows.Forms.Padding(4);
             this.trackBar2.Maximum = 100;
             this.trackBar2.Name = "trackBar2";
@@ -115,7 +112,7 @@
             this.trackBar1.Margin = new System.Windows.Forms.Padding(4);
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.trackBar1.Size = new System.Drawing.Size(795, 31);
+            this.trackBar1.Size = new System.Drawing.Size(796, 31);
             this.trackBar1.TabIndex = 3;
             this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
@@ -152,8 +149,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(804, 535);
-            this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panel2);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form2";
             this.Text = "播放器";

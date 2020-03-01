@@ -378,6 +378,7 @@
             this.txbBitrate.Name = "txbBitrate";
             this.txbBitrate.Size = new System.Drawing.Size(75, 25);
             this.txbBitrate.TabIndex = 1;
+            this.txbBitrate.TextChanged += new System.EventHandler(this.txbBitrate_TextChanged);
             // 
             // tabAudio
             // 
@@ -553,6 +554,7 @@
             this.txbAuBit.Name = "txbAuBit";
             this.txbAuBit.Size = new System.Drawing.Size(100, 25);
             this.txbAuBit.TabIndex = 1;
+            this.txbAuBit.TextChanged += new System.EventHandler(this.txbAuBit_TextChanged);
             // 
             // chbAuBit
             // 

@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Management;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace Transcode
 {
@@ -104,7 +107,7 @@ namespace Transcode
             }
             if (checkBoxGPU.Checked)
             {
-                if (cmbFomart.Text == "mp4" | cmbFomart.Text == "mkv")
+                if (cmbFomart.Text == "mp4" || cmbFomart.Text == "mkv")
                 {
                     if (cmbGPU.SelectedText == "Intel")
                         sbCom.Append($" -c:v h264_qsv");
@@ -123,7 +126,7 @@ namespace Transcode
                     if (cmbGPU.SelectedText == "Nvidia")
                         sbCom.Append($" -c:v flv_nvenc");
                 }
-                if (cmbFomart.Text == "ts" | cmbFomart.Text == "mpeg2")
+                if (cmbFomart.Text == "ts" || cmbFomart.Text == "mpeg2")
                 {
                     if (cmbGPU.SelectedText == "Intel")
                         sbCom.Append($" -c:v mpeg2video_qsv");
@@ -297,7 +300,7 @@ namespace Transcode
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             treeView1.Nodes.Clear();
-            if (listView1.FocusedItem.Focused)
+            if (listView1.Focused)
             {
                 textBox1.Text = Path.GetDirectoryName(listView1.FocusedItem.Text);
                 int i = listView1.FocusedItem.Index;
@@ -305,8 +308,8 @@ namespace Transcode
                 TreeNode vi = new TreeNode("视频信息");
                 TreeNode ai = new TreeNode("音频信息");
                 vi.Nodes.Add($"编码器：{videos[i].Format}");
-                vi.Nodes.Add($"大小：{videos[i].Size}");
-                vi.Nodes.Add($"时长：{videos[i].Duration}");
+                vi.Nodes.Add($"大小：{(videos[i].Size)/1048576} MB");
+                vi.Nodes.Add($"时长：{(videos[i].Duration/1000)/3600}:{((videos[i].Duration/1000)%3600)/60}:{((videos[i].Duration/1000)%3600)%60}");
                 vi.Nodes.Add($"比特率：{(videos[i].Bitrate) / 1024} kbps");
                 vi.Nodes.Add($"长度：{videos[i].Width}");
                 vi.Nodes.Add($"宽度：{videos[i].Height}");
@@ -536,9 +539,75 @@ namespace Transcode
                 throw;
             }
         }
+        public void SerializeVideo()
+        {
+            FileStream stream = File.Create($"{path}VideoList.xml");
+            using (TextWriter writer = new StreamWriter(stream))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(List<Video>));
+                serializer.Serialize(writer, videos);
+            }
+        }
+        public void SerializeJson()
+        {
+            using (StreamWriter writer = File.CreateText($"{path}VideoList.json"))
+            {
+                JsonSerializer serializer = JsonSerializer.Create(
+                    new JsonSerializerSettings { Formatting = Formatting.Indented });
+                serializer.Serialize(writer, videos);
+            }
+        }
+        public void SerializeVideo2()
+        {
+            foreach (Video v in videos)
+            {
+                FileStream stream = File.Create($"{path}VideoList.xml");
+                using (TextWriter writer = new StreamWriter(stream))
+                {
+                    Type a = v.GetType();
+                    foreach (PropertyInfo propertyInfo in a.GetProperties())
+                    {
+                        //propertyInfo.get;
+                    }
+                }
+            }
+        }
 
+        public void DeserializeVideo()
+        {
+            List<Video> vi;
+            if (File.Exists("VideoList.xml"))
+            {
+                using (FileStream stream = new FileStream($"{path}VideoList.xml", FileMode.Open))
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(List<Video>));
+                    vi = serializer.Deserialize(stream) as List<Video>;
+                    foreach (var v in vi)
+                    {
+                        videos.Add(v);
+                        listView1.Items.Add(v.Path);
+                    }
+                }
+            }
+        }
+        public void DeserializeJson()
+        {
+            using (StreamReader reader = File.OpenText($"{path}VideoList.json"))
+            {
+                JsonSerializer serializer = JsonSerializer.Create();
+                var vs = serializer.Deserialize(reader, typeof(List<Video>))
+                    as List<Video>;
+                foreach (var item in vs)
+                {
+                    videos.Add(item);
+                    listView1.Items.Add(item.Path);
+                }
+            }
+        }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            SerializeVideo();
+            SerializeJson();
             try
             {
                 Process p = Process.GetProcessById(ProcessID);
@@ -573,6 +642,12 @@ namespace Transcode
         private void txbAuBit_TextChanged(object sender, EventArgs e)
         {
             SetBitrate(sender as TextBox,false);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            DeserializeVideo();
+            DeserializeJson();
         }
     }
 }

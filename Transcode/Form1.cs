@@ -3,12 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Management;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Serialization;
+using MediaInfo.Model;
 
 namespace Transcode
 {
@@ -233,6 +236,7 @@ namespace Transcode
         private void p_Exited(object sender, System.EventArgs e)
         {
             SetButton();
+            //StartNext();
         }
         public delegate void SetButtonCallback();
         public void SetButton()
@@ -249,6 +253,21 @@ namespace Transcode
                 btnEnd.Enabled = false;
             }
         }
+        //public delegate void StartNextback();
+        //public void StartNext()
+        //{
+        //    if (progressBar1.InvokeRequired)
+        //    {
+        //        SetButtonCallback d = SetButton;
+        //        Invoke(d);
+        //    }
+        //    else
+        //    {
+        //        btnStart.Enabled = true;
+        //        btnPause.Enabled = false;
+        //        btnEnd.Enabled = false;
+        //    }
+        //}
         private void p_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             string s = e.Data;
@@ -300,7 +319,7 @@ namespace Transcode
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             treeView1.Nodes.Clear();
-            if (listView1.Focused)
+            if (listView1.FocusedItem!=null)
             {
                 textBox1.Text = Path.GetDirectoryName(listView1.FocusedItem.Text);
                 int i = listView1.FocusedItem.Index;
@@ -539,7 +558,7 @@ namespace Transcode
                 throw;
             }
         }
-        public void SerializeVideo()
+        public void SerializeVideo()    //系统自带序列化，忽略方式【XmlIgnore】
         {
             FileStream stream = File.Create($"{path}VideoList.xml");
             using (TextWriter writer = new StreamWriter(stream))
@@ -548,35 +567,68 @@ namespace Transcode
                 serializer.Serialize(writer, videos);
             }
         }
-        public void SerializeJson()
+        public void SerializeJson()     //系统自带序列化，忽略方式【JsonIgnore】
         {
             using (StreamWriter writer = File.CreateText($"{path}VideoList.json"))
             {
                 JsonSerializer serializer = JsonSerializer.Create(
-                    new JsonSerializerSettings { Formatting = Formatting.Indented });
+                    new JsonSerializerSettings { Formatting = Newtonsoft.Json.Formatting.Indented });
                 serializer.Serialize(writer, videos);
             }
         }
-        public void SerializeVideo2()
+        public void SerializeVideo2()   //自定义序列化，忽略方式:属性前加【MyXmlIgnore】
         {
+            XmlDocument xml = new XmlDocument();
+            XmlNode vroot = xml.CreateElement("Videos");
             foreach (Video v in videos)
             {
-                FileStream stream = File.Create($"{path}VideoList.xml");
-                using (TextWriter writer = new StreamWriter(stream))
+                XmlNode video= xml.CreateElement("Video");
+                Type a = v.GetType();
+                foreach (PropertyInfo propertyInfo in a.GetProperties())
                 {
-                    Type a = v.GetType();
-                    foreach (PropertyInfo propertyInfo in a.GetProperties())
-                    {
-                        //propertyInfo.get;
-                    }
+                    if(propertyInfo.GetCustomAttribute(typeof(MyXmlIgnoreAttribute))!=null)
+                        continue;
+                    XmlElement xe = xml.CreateElement(propertyInfo.Name);
+                    xe.InnerText = propertyInfo.GetValue(v).ToString();
+                    video.AppendChild(xe);
                 }
+                vroot.AppendChild(video);
             }
+            xml.AppendChild(vroot);
+            xml.Save($"{path}VideoListHandwrite.xml");
         }
 
+        public void SerializeVideo3()   //自定义序列化，忽略方式:类前加【SelectNonSerializ(new string {"要忽略的属性"} ) 】
+        {
+            XmlDocument xml = new XmlDocument();
+            XmlNode vroot = xml.CreateElement("Videos");
+            foreach (Video v in videos)
+            {
+                XmlNode video= xml.CreateElement("Video");
+                Type a = v.GetType();
+                SelectNonSerializAttribute attr=a.GetCustomAttribute(typeof(SelectNonSerializAttribute)) as SelectNonSerializAttribute;
+                string[] ignore=null;
+                if (null != attr)
+                {
+                    ignore = attr.V;
+                }
+                foreach (PropertyInfo propertyInfo in a.GetProperties())
+                {
+                    if (a.GetCustomAttribute(typeof(SelectNonSerializAttribute)) != null && ignore.Contains(propertyInfo.Name))
+                        continue;
+                    XmlElement xe = xml.CreateElement(propertyInfo.Name);
+                    xe.InnerText = propertyInfo.GetValue(v).ToString();
+                    video.AppendChild(xe);
+                }
+                vroot.AppendChild(video);
+            }
+            xml.AppendChild(vroot);
+            xml.Save($"{path}VideoListHandwrite2.xml");
+        }
         public void DeserializeVideo()
         {
             List<Video> vi;
-            if (File.Exists("VideoList.xml"))
+            if (File.Exists("VideoList.xml.xml"))
             {
                 using (FileStream stream = new FileStream($"{path}VideoList.xml", FileMode.Open))
                 {
@@ -590,6 +642,29 @@ namespace Transcode
                 }
             }
         }
+        public void DeserializeVideo2()
+        {
+            using (FileStream stream = new FileStream($"{path}VideoListHandwrite.xml", FileMode.Open))
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+                xmlDocument.Load(stream);
+                XmlNode vroot = xmlDocument.SelectSingleNode("Videos");
+                XmlNodeList xl = vroot.ChildNodes;
+                foreach (XmlNode x in xl)
+                {
+                    Video vd = new Video();
+                    XmlNodeList vNodes = x.ChildNodes;
+                    foreach (XmlNode vNode in vNodes)
+                    {
+                        var pdIn = vd.GetType().GetProperty(vNode.Name);
+                        vd.GetType().GetProperty(vNode.Name).SetValue(vd,vNode.InnerText);
+                    }
+                    videos.Add(vd);
+                    listView1.Items.Add(vd.Path);
+                }
+            }
+        }
+
         public void DeserializeJson()
         {
             using (StreamReader reader = File.OpenText($"{path}VideoList.json"))
@@ -606,8 +681,8 @@ namespace Transcode
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            SerializeVideo();
-            SerializeJson();
+            SerializeVideo3();
+            //SerializeJson();
             try
             {
                 Process p = Process.GetProcessById(ProcessID);
@@ -647,7 +722,9 @@ namespace Transcode
         private void Form1_Load(object sender, EventArgs e)
         {
             DeserializeVideo();
-            DeserializeJson();
+            if (listView1.Items.Count != 0)
+                btnRemove.Enabled = true;
+            //DeserializeJson();
         }
     }
 }

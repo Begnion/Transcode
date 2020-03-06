@@ -236,7 +236,7 @@ namespace Transcode
         private void p_Exited(object sender, System.EventArgs e)
         {
             SetButton();
-            //StartNext();
+            StartNext();
         }
         public delegate void SetButtonCallback();
         public void SetButton()
@@ -253,21 +253,25 @@ namespace Transcode
                 btnEnd.Enabled = false;
             }
         }
-        //public delegate void StartNextback();
-        //public void StartNext()
-        //{
-        //    if (progressBar1.InvokeRequired)
-        //    {
-        //        SetButtonCallback d = SetButton;
-        //        Invoke(d);
-        //    }
-        //    else
-        //    {
-        //        btnStart.Enabled = true;
-        //        btnPause.Enabled = false;
-        //        btnEnd.Enabled = false;
-        //    }
-        //}
+        public delegate void StartNextCallback();
+        public void StartNext()
+        {
+            if (InvokeRequired)
+            {
+                StartNextCallback d = StartNext;
+                Invoke(d);
+            }
+            else
+            {
+                if (listView1.FocusedItem.Index<(listView1.Items.Count-1))
+                {
+                    int ind = listView1.FocusedItem.Index;
+                    listView1.Items[++ind].Focused = true;
+                    listView1.Items[ind].Selected = true;
+                    btnStart_Click(this, null);
+                }
+            }
+        }
         private void p_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             string s = e.Data;
